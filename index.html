@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>이태호 & 박찬미 결혼식에 초대합니다</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;1,300&family=Noto+Serif+KR:wght@200;300;400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #fdfbf7;
+            --main-red: #e83a3a;
+            --text-dark: #2d3436;
+            --text-light: #636e72;
+            --gold-accent: #b2945b;
+            --divider-color: #eeeae3;
+        }
+
+        /* 모바일 터치 최적화 */
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        html, body { margin: 0; padding: 0; background-color: #f0f0f0; font-family: 'Noto Serif KR', serif; color: var(--text-dark); word-break: keep-all; }
+        
+        .container { max-width: 480px; margin: 0 auto; background-color: var(--bg-color); min-height: 100vh; position: relative; }
+        section { padding: 80px 24px; text-align: center; }
+
+        /* 메인 섹션: 모바일 풀스크린 감성 */
+        .main { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 20px; }
+        .main .header-eng { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 1.2rem; letter-spacing: 4px; color: var(--gold-accent); margin-bottom: 30px; }
+        .qr-main { width: 180px; height: auto; margin-bottom: 40px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-radius: 10px; }
+        .names { font-size: 1.8rem; letter-spacing: 4px; margin-bottom: 15px; font-weight: 300; }
+        .names span { font-size: 1.2rem; color: var(--gold-accent); margin: 0 10px; }
+        .main-date { font-size: 1rem; color: var(--text-light); letter-spacing: 1.5px; }
+
+        /* 인사말: 행간 최적화 */
+        .invitation { background-color: #fff; }
+        .section-title { font-family: 'Cormorant Garamond', serif; font-size: 0.85rem; letter-spacing: 5px; color: var(--gold-accent); margin-bottom: 45px; text-transform: uppercase; }
+        .invitation-text { line-height: 2.4; font-weight: 300; font-size: 0.95rem; color: #444; }
+
+        /* 갤러리: 8장 스와이프 대응 슬라이더 */
+        .gallery-wrap { background-color: #fff; padding: 0 0 80px; }
+        .slider-viewport { width: 100%; aspect-ratio: 3 / 4; overflow: hidden; position: relative; }
+        .slider-track { display: flex; width: 800%; height: 100%; transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1); }
+        .slide { width: 12.5%; height: 100%; }
+        .slide img { width: 100%; height: 100%; object-fit: cover; }
+        .nav-btn { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.4); border: none; width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; z-index: 5; font-size: 1rem; }
+
+        /* 지도: 모바일 전용 길찾기 강조 */
+        .location { background-color: #fff; }
+        .map-wrapper { width: 100%; height: 280px; margin-top: 20px; border-radius: 8px; overflow: hidden; border: 1px solid var(--divider-color); }
+        .map-buttons { display: flex; justify-content: space-between; gap: 8px; margin-top: 15px; }
+        .map-link { flex: 1; padding: 12px 0; border: 1px solid var(--gold-accent); color: var(--gold-accent); text-decoration: none; font-size: 0.8rem; border-radius: 4px; font-weight: 400; }
+
+        /* 계좌: 터치 영역 확대 */
+        .account-btn { width: 100%; padding: 18px 20px; border: 1px solid var(--divider-color); background: #fff; margin-bottom: 8px; font-family: inherit; cursor: pointer; display: flex; justify-content: space-between; align-items: center; border-radius: 6px; font-size: 0.95rem; }
+        .account-content { display: none; padding: 20px; background-color: #f9f6f1; text-align: left; font-size: 0.9rem; border-radius: 6px; margin-bottom: 15px; line-height: 1.9; }
+        .account-content.show { display: block; animation: slideDown 0.3s ease-out; }
+
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+        .footer { padding: 50px 0; font-size: 0.75rem; color: #ccc; letter-spacing: 1px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <section class="main">
+        <div class="header-eng">The Marriage</div>
+        <img src="./images/heart-qr.png" class="qr-main" alt="Heart QR">
+        <div class="names">이태호 <span>|</span> 박찬미</div>
+        <div class="main-date">2026. 06. 13. SAT. PM 2:30</div>
+    </section>
+
+    <section class="invitation">
+        <div class="section-title">Invitation</div>
+        <div class="invitation-text">
+            함께 있으면 가장 편안한 사람을 만나<br>
+            저희 두 사람이 사랑의 결실을 맺습니다.<br>
+            부디 오셔서 축복해 주시면<br>
+            큰 기쁨으로 간직하겠습니다.
+        </div>
+    </section>
+
+    <section class="gallery-wrap">
+        <div class="section-title">Gallery</div>
+        <div class="slider-viewport">
+            <div class="slider-track" id="mainSlider">
+			<div class="slide"><img src="./images/photo1.jpg" alt="1"></div>
+			<div class="slide"><img src="./images/photo2.jpg" alt="2"></div>
+			<div class="slide"><img src="./images/photo3.jpg" alt="3"></div>
+			<div class="slide"><img src="./images/photo4.jpg" alt="4"></div>
+			<div class="slide"><img src="./images/photo5.jpg" alt="5"></div>
+			<div class="slide"><img src="./images/photo6.jpg" alt="6"></div>
+			<div class="slide"><img src="./images/photo7.jpg" alt="7"></div>
+			<div class="slide"><img src="./images/photo8.jpg" alt="8"></div>
+		</div>
+            <button class="nav-btn" style="left:12px;" onclick="handleNav(-1)">❮</button>
+            <button class="nav-btn" style="right:12px;" onclick="handleNav(1)">❯</button>
+        </div>
+        <p style="font-size:0.75rem; color:#ccc; margin-top:15px;">사진을 터치하면 자동 재생이 멈춥니다.</p>
+    </section>
+
+    <section class="calendar-wrap">
+        <div class="section-title">June 2026</div>
+        <table class="calendar-table" style="width:100%; max-width:300px; margin:0 auto; border-collapse:collapse;">
+            <thead>
+                <tr style="color:var(--gold-accent); font-size:0.8rem;">
+                    <th>S</th><th>M</th><th>T</th><th>W</th><th>T</th><th>F</th><th>S</th>
+                </tr>
+            </thead>
+            <tbody style="font-size:0.9rem; font-weight:300;">
+                <tr style="height:40px;"><td></td><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td></tr>
+                <tr style="height:40px;"><td>7</td><td>8</td><td>9</td><td>10</td><td>11</td><td>12</td><td class="active" style="background:var(--main-red); color:#fff; border-radius:50%;">13</td></tr>
+                <tr style="height:40px;"><td>14</td><td>15</td><td>16</td><td>17</td><td>18</td><td>19</td><td>20</td></tr>
+                <tr style="height:40px;"><td>21</td><td>22</td><td>23</td><td>24</td><td>25</td><td>26</td><td>27</td></tr>
+                <tr style="height:40px;"><td>28</td><td>29</td><td>30</td><td></td><td></td><td></td><td></td></tr>
+            </tbody>
+        </table>
+        <p style="margin-top:30px; font-size:0.9rem; color:var(--text-light);">오후 2시 30분</p>
+    </section>
+
+    <section class="account">
+        <div class="section-title">Greeting</div>
+        <button class="account-btn" onclick="toggleAcc('groom')">신랑측 마음 전하실 곳 <span>▼</span></button>
+        <div id="groom" class="account-content">
+            <b>신랑 이태호</b> OO은행 123-456-7890<br>
+            <b>혼주 이OO</b> OO은행 000-000-0000
+        </div>
+        <button class="account-btn" onclick="toggleAcc('bride')">신부측 마음 전하실 곳 <span>▼</span></button>
+        <div id="bride" class="account-content">
+            <b>신부 박찬미</b> OO은행 098-765-4321<br>
+            <b>혼주 박OO</b> OO은행 000-000-0000
+        </div>
+    </section>
+
+    <section class="location">
+        <div class="section-title">Location</div>
+        <div style="font-size:1.1rem; margin-bottom:8px;">호텔선샤인 7층 그랜드볼룸</div>
+        <div style="font-size:0.85rem; color:var(--text-light);">대전 동구 동서대로 1700</div>
+        
+        <div class="map-wrapper">
+            <iframe 
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3213.911360053932!2d127.43954937637845!3d36.350810172332155!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x356549298453416b%3A0xc0747120a10c9c38!2z7Zi47YWU7ISg7IOk7J24!5e0!3m2!1sko!2skr!4v1715410000000!5m2!1sko!2skr" 
+                width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy">
+            </iframe>
+        </div>
+
+        <div class="map-buttons">
+            <a href="https://naver.me/FfMW3Y0f" target="_blank" class="map-link">네이버 지도</a>
+            <a href="https://map.kakao.com/link/to/호텔선샤인,36.3486,127.4418" target="_blank" class="map-link">카카오맵</a>
+            <a href="https://tmap.life/462198c" target="_blank" class="map-link">티맵 안내</a>
+        </div>
+    </section>
+
+    <div class="footer">Copyright © 2026 LeeTaeho & ParkChanmi</div>
+</div>
+
+<script>
+    /* 계좌 아코디언 로직 */
+    function toggleAcc(id) {
+        const content = document.getElementById(id);
+        const isOpen = content.classList.contains('show');
+        document.querySelectorAll('.account-content').forEach(el => el.classList.remove('show'));
+        if (!isOpen) content.classList.add('show');
+    }
+
+    /* 8장 슬라이더 로직 */
+    let currentIdx = 0;
+    const slider = document.getElementById('mainSlider');
+    let autoSlide = setInterval(() => moveSlide(1), 4000);
+
+    function moveSlide(dir) {
+        currentIdx = (currentIdx + dir + 8) % 8;
+        slider.style.transform = `translateX(-${currentIdx * 12.5}%)`;
+    }
+
+    function stopAutoSlide() {
+        if (autoSlide) {
+            clearInterval(autoSlide);
+            autoSlide = null;
+        }
+    }
+
+    function handleNav(dir) {
+        stopAutoSlide(); // 터치 조작 시 자동 정지
+        moveSlide(dir);
+    }
+
+    slider.addEventListener('mousedown', stopAutoSlide);
+    slider.addEventListener('touchstart', stopAutoSlide, {passive: true});
+</script>
+
+</body>
+</html>
