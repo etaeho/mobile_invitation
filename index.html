@@ -6,7 +6,8 @@
     <title>이태호 & 박찬미 결혼식에 초대합니다</title>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;1,300&family=Noto+Serif+KR:wght@200;300;400&display=swap" rel="stylesheet">
     
-    <script type="text/javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=60cf6280e9ee52aa958f623a9f14c4e3"></script>
+    <!-- 카카오 지도 SDK -->
+    <script type="text/javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=60cf6280e9ee52aa958f623a9f14c4e3&libraries=services&autoload=false"></script>
     
     <style>
         :root {
@@ -16,7 +17,6 @@
             --text-light: #636e72;
             --gold-accent: #b2945b;
             --divider-color: #eeeae3;
-            --kakao-yellow: #FFEB00;
         }
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -49,24 +49,72 @@
         .account-content { display: none; padding: 15px; background-color: #f9f6f1; text-align: left; font-size: 0.9rem; border-radius: 6px; margin-bottom: 15px; }
         .account-content.show { display: block; animation: slideDown 0.3s ease-out; }
         
-        /* 계좌 및 복사 스타일 */
         .account-item { display: flex; flex-direction: column; padding: 15px 0; border-bottom: 1px solid #eee; }
         .account-item:last-child { border-bottom: none; }
         .account-info { margin-bottom: 10px; line-height: 1.6; }
         .button-group { display: flex; gap: 8px; }
         .btn-action { flex: 1; padding: 8px 0; border-radius: 4px; border: 1px solid #ddd; background: #fff; font-size: 0.8rem; cursor: pointer; text-align: center; text-decoration: none; color: #333; }
-        .btn-kakao { background-color: var(--kakao-yellow); border: none; font-weight: bold; }
 
         .location { background-color: #fff; }
         .map-wrapper { width: 100%; height: 350px; margin-top: 25px; border-radius: 8px; overflow: hidden; border: 1px solid var(--divider-color); }
         .address-box { margin-bottom: 20px; }
         .btn-copy-addr { display: inline-block; margin-top: 10px; padding: 6px 15px; font-size: 0.8rem; border: 1px solid var(--divider-color); border-radius: 20px; background: #fff; cursor: pointer; }
 
+        .share-wrap { padding-top: 40px; padding-bottom: 60px; border-top: 1px solid var(--divider-color); }
+        .share-buttons { display: flex; flex-direction: column; gap: 10px; padding: 0 24px; }
+        .share-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            padding: 16px;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 1px solid var(--divider-color);
+            background-color: #fff;
+            color: var(--text-dark);
+        }
+        .share-btn:active { opacity: 0.7; transform: scale(0.98); }
+        .share-btn svg { flex-shrink: 0; }
+
         @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
-        .footer { padding: 50px 0; font-size: 0.75rem; color: #ccc; letter-spacing: 1px; }
+        .footer { padding-bottom: 50px; font-size: 0.75rem; color: #aaa; letter-spacing: 1px; text-align: center; }
+        
+        #toast {
+            visibility: hidden;
+            min-width: 250px;
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            border-radius: 30px;
+            padding: 12px;
+            position: fixed;
+            z-index: 1000;
+            left: 50%;
+            bottom: 30px;
+            transform: translateX(-50%);
+            font-size: 0.9rem;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+        #toast.show {
+            visibility: visible;
+            animation: fadeInOut 2.5s;
+        }
+        @keyframes fadeInOut {
+            0% { opacity: 0; bottom: 10px; }
+            15% { opacity: 1; bottom: 30px; }
+            85% { opacity: 1; bottom: 30px; }
+            100% { opacity: 0; bottom: 10px; }
+        }
     </style>
 </head>
 <body>
+
+<div id="toast">복사되었습니다.</div>
 
 <div class="container">
     <section class="main">
@@ -132,21 +180,18 @@
                 <div class="account-info"><b>신랑 이태호</b><br>신한은행 110-305-074845</div>
                 <div class="button-group">
                     <button class="btn-action" onclick="copyText('110-305-074845')">계좌 복사</button>
-                    <a href="https://qr.kakaopay.com/Ej9Dvvipo" class="btn-action btn-kakao">카카오페이 송금</a>
                 </div>
             </div>
             <div class="account-item">
                 <div class="account-info"><b>혼주 이상호</b><br>신한은행 110-305-074845</div>
                 <div class="button-group">
                     <button class="btn-action" onclick="copyText('110-305-074845')">계좌 복사</button>
-                    <a href="https://qr.kakaopay.com/Ej9Dvvipo" class="btn-action btn-kakao">카카오페이 송금</a>
                 </div>
             </div>
             <div class="account-item">
                 <div class="account-info"><b>혼주 강희선</b><br>신한은행 110-305-00000</div>
                 <div class="button-group">
                     <button class="btn-action" onclick="copyText('110-305-00000')">계좌 복사</button>
-                    <a href="https://qr.kakaopay.com/Ej9Dvvipo" class="btn-action btn-kakao">카카오페이 송금</a>
                 </div>
             </div>
         </div>
@@ -157,21 +202,6 @@
                 <div class="account-info"><b>신부 박찬미</b><br>신한은행 110-305-074845</div>
                 <div class="button-group">
                     <button class="btn-action" onclick="copyText('110-305-074845')">계좌 복사</button>
-                    <a href="https://qr.kakaopay.com/Ej9Dvvipo" class="btn-action btn-kakao">카카오페이 송금</a>
-                </div>
-            </div>
-            <div class="account-item">
-                <div class="account-info"><b>혼주 이상호</b><br>신한은행 110-305-074845</div>
-                <div class="button-group">
-                    <button class="btn-action" onclick="copyText('110-305-074845')">계좌 복사</button>
-                    <a href="https://qr.kakaopay.com/Ej9Dvvipo" class="btn-action btn-kakao">카카오페이 송금</a>
-                </div>
-            </div>
-            <div class="account-item">
-                <div class="account-info"><b>혼주 강희선</b><br>신한은행 110-305-074845</div>
-                <div class="button-group">
-                    <button class="btn-action" onclick="copyText('110-305-074845')">계좌 복사</button>
-                    <a href="https://qr.kakaopay.com/Ej9Dvvipo" class="btn-action btn-kakao">카카오페이 송금</a>
                 </div>
             </div>
         </div>
@@ -190,27 +220,42 @@
         </div>
     </section>
 
+    <section class="share-wrap">
+        <div class="section-title">Share</div>
+        <div class="share-buttons">
+            <button class="share-btn link" onclick="copyPageUrl()">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+                    <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+                </svg>
+                청첩장 링크 복사하기
+            </button>
+        </div>
+    </section>
+
     <div class="footer">Copyright © 2026 LeeTaeho & ParkChanmi</div>
 </div>
 
 <script>
-    /* 1. 카카오 지도 */
+    /* 1. 카카오 지도 초기화 */
     window.onload = function() {
-        if (typeof kakao !== 'undefined') {
-            var container = document.getElementById('map');
-            var options = {
-                center: new kakao.maps.LatLng(36.349162, 127.438541),
-                level: 3
-            };
-            var map = new kakao.maps.Map(container, options);
-            var marker = new kakao.maps.Marker({
-                position: new kakao.maps.LatLng(36.349162, 127.438541)
+        if (typeof kakao !== 'undefined' && kakao.maps) {
+            kakao.maps.load(function() {
+                var container = document.getElementById('map');
+                var pos = new kakao.maps.LatLng(36.349162, 127.438541);
+                var options = {
+                    center: pos,
+                    level: 3
+                };
+                var map = new kakao.maps.Map(container, options);
+                var marker = new kakao.maps.Marker({
+                    position: pos
+                });
+                marker.setMap(map);
             });
-            marker.setMap(map);
         }
     };
 
-    /* 2. 계좌 토글 */
     function toggleAcc(id) {
         const content = document.getElementById(id);
         const isOpen = content.classList.contains('show');
@@ -218,34 +263,50 @@
         if (!isOpen) content.classList.add('show');
     }
 
-    /* 3. 클립보드 복사 */
-    function copyText(text) {
-        if (navigator.clipboard && window.isSecureContext) {
-            navigator.clipboard.writeText(text).then(() => {
-                alert(text);
-            });
-        } else {
-            // 구형 브라우저나 일부 모바일 대응
-            let textArea = document.createElement("textarea");
-            textArea.value = text;
-            document.body.appendChild(textArea);
-            textArea.select();
-            try {
-                document.execCommand('copy');
-                alert(text);
-            } catch (err) {
-                console.error('복사 실패', err);
-            }
-            document.body.removeChild(textArea);
-        }
+    function showToast(msg) {
+        const toast = document.getElementById('toast');
+        toast.innerText = msg || "복사되었습니다.";
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 2500);
     }
 
-    /* 4. 이미지 슬라이더 */
+    function copyText(text) {
+        const textArea = document.createElement("textarea");
+        textArea.value = text;
+        textArea.style.position = "fixed";
+        textArea.style.left = "-9999px";
+        textArea.style.top = "0";
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        
+        try {
+            const successful = document.execCommand('copy');
+            if (successful) {
+                showToast("복사되었습니다: " + text);
+            } else {
+                throw new Error('fail');
+            }
+        } catch (err) {
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(text).then(() => {
+                    showToast("복사되었습니다: " + text);
+                }).catch(() => {
+                    prompt("아래 텍스트를 복사하세요:", text);
+                });
+            } else {
+                prompt("아래 텍스트를 복사하세요:", text);
+            }
+        }
+        document.body.removeChild(textArea);
+    }
+
     let currentIdx = 0;
     const slider = document.getElementById('mainSlider');
     let autoSlide = setInterval(() => moveSlide(1), 4000);
 
     function moveSlide(dir) {
+        if(!slider) return;
         currentIdx = (currentIdx + dir + 8) % 8;
         slider.style.transform = `translateX(-${currentIdx * 12.5}%)`;
     }
@@ -262,12 +323,11 @@
         moveSlide(dir);
     }
 
-    // 페이지 URL 복사
     function copyPageUrl() {
         copyText(window.location.href);
     }
 
-    slider.addEventListener('touchstart', stopAutoSlide, {passive: true});
+    if(slider) slider.addEventListener('touchstart', stopAutoSlide, {passive: true});
 </script>
 
 </body>
