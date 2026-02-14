@@ -26,11 +26,32 @@
             --white: #ffffff;
         }
 
-        /* 기본 설정 */
+        /* 기본 설정 및 선택/드래그 방지 */
         * { 
             box-sizing: border-box; 
             -webkit-tap-highlight-color: transparent;
             word-break: keep-all;
+            /* 전역 선택 방지 */
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            -webkit-touch-callout: none;
+        }
+
+        /* 이미지 드래그 및 저장 방지 */
+        img {
+            -webkit-user-drag: none;
+            -khtml-user-drag: none;
+            -moz-user-drag: none;
+            -o-user-drag: none;
+            pointer-events: none;
+        }
+
+        /* 버튼 및 링크 등 인터랙션 요소는 예외 처리 */
+        button, a, .acc-btn, .btn-sm, .btn-nav, .btn-share, .slider-btn, .btn-cal {
+            user-select: auto;
+            pointer-events: auto;
         }
 
         body, html {
@@ -39,8 +60,6 @@
             font-family: 'Noto Serif KR', serif;
             color: var(--text-main);
             overflow-x: hidden;
-            user-select: none;
-            -webkit-user-select: none;
         }
 
         .container {
@@ -117,7 +136,7 @@
             margin-bottom: 50px;
         }
         
-        /* 서열/관계 스타일 (이전 버전 복구 및 정렬 최적화) */
+        /* 서열/관계 스타일 */
         .family-relation { 
             display: flex; 
             flex-direction: column; 
@@ -172,7 +191,6 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            pointer-events: none;
         }
         .slider-btn {
             position: absolute;
@@ -185,7 +203,6 @@
             display: flex; align-items: center; justify-content: center;
             font-size: 1rem;
             cursor: pointer;
-            pointer-events: auto;
         }
 
         /* 달력 */
@@ -234,7 +251,6 @@
             font-size: 0.95rem;
             cursor: pointer;
             border-radius: 4px;
-            pointer-events: auto;
         }
         .acc-content {
             display: none;
@@ -263,7 +279,6 @@
             color: #444;
             text-align: center;
             border-radius: 4px;
-            pointer-events: auto;
         }
 
         /* 오시는 길 */
@@ -289,7 +304,6 @@
             color: var(--text-main);
             font-size: 0.85rem;
             border-radius: 4px;
-            pointer-events: auto;
         }
 
         /* 하단 공유 */
@@ -303,7 +317,6 @@
             font-family: inherit;
             font-size: 0.9rem;
             cursor: pointer;
-            pointer-events: auto;
         }
         .copyright { margin-top: 40px; font-size: 0.7rem; color: #bbb; letter-spacing: 1px; }
 
@@ -338,12 +351,14 @@
             border-radius: 20px; 
             text-decoration: none; 
             color: var(--text-sub);
-            pointer-events: auto;
+            display: flex;
+            align-items: center;
+            gap: 5px;
         }
 
     </style>
 </head>
-<body>
+<body oncontextmenu="return false" onselectstart="return false" ondragstart="return false">
 
 <div id="toast">복사되었습니다.</div>
 
@@ -433,13 +448,17 @@
         <div id="dDayDisplay" class="d-day-info"></div>
 
         <div class="cal-actions">
-            <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=이태호+박찬미+결혼식&dates=20260613T053000Z/20260613T073000Z&location=호텔선샤인+7층+씨엘드+포레" target="_blank" class="btn-cal">Google 일정 추가</a>
-            <a href="javascript:void(0);" onclick="downloadIcs()" class="btn-cal">ICS 파일 저장</a>
+            <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=이태호+박찬미+결혼식&dates=20260613T053000Z/20260613T073000Z&location=호텔선샤인+7층+씨엘드+포레" target="_blank" class="btn-cal">구글 캘린더 등록</a>
+            <a href="javascript:void(0);" onclick="downloadIcs()" class="btn-cal">기타 캘린더(ICS) 저장</a>
         </div>
+        <p style="font-size:0.75rem; color:#aaa; margin-top:10px;">* ICS 파일 저장 후, 파일을 실행하면 캘린더에 등록됩니다.</p>
     </section>
 
     <!-- Account -->
-    <section class="account">        
+    <section class="account">
+        <div class="section-title">Gifts</div>
+        <div style="font-size: 0.9rem; color: var(--text-sub); margin-bottom: 30px;">축복해주시는 따뜻한 마음을<br>소중히 간직하겠습니다.</div>
+        
         <button class="acc-btn" onclick="toggleAccordion('groomAcc')">신랑측 마음 전하실 곳 <span style="font-size:0.7rem; opacity:0.5;">▼</span></button>
         <div id="groomAcc" class="acc-content">
             <div class="acc-row">
@@ -556,25 +575,39 @@
     let auto = setInterval(()=>moveSlider(1), 5000);
     track.addEventListener('touchstart', () => clearInterval(auto), {passive: true});
 
-    /* ICS 다운로드 */
+    /* ICS 다운로드 (표준 규격 최적화) */
     function downloadIcs() {
-        const ics = [
+        const icsData = [
             "BEGIN:VCALENDAR",
             "VERSION:2.0",
+            "PRODID:-//LeePark//WeddingInvitation//KO",
+            "CALSCALE:GREGORIAN",
+            "METHOD:PUBLISH",
             "BEGIN:VEVENT",
-            "DTSTART:20260613T143000",
-            "DTEND:20260613T160000",
+            "UID:wedding-20260613-lee-park@wedding.invitation",
+            "DTSTAMP:20260215T024700Z",
+            "DTSTART:20260613T053000Z", // KST 14:30
+            "DTEND:20260613T073000Z",   // KST 16:30
             "SUMMARY:이태호 ❤ 박찬미 결혼식",
-            "DESCRIPTION:소중한 분들을 초대합니다.",
+            "DESCRIPTION:저희 두 사람의 새로운 출발을 함께 축복해 주세요.",
             "LOCATION:호텔선샤인 7층 씨엘드 포레",
             "END:VEVENT",
             "END:VCALENDAR"
-        ].join("\n");
-        const blob = new Blob([ics], {type: 'text/calendar;charset=utf-8'});
+        ].join("\r\n");
+
+        const blob = new Blob([icsData], { type: 'text/calendar;charset=utf-8' });
+        const url = window.URL.createObjectURL(blob);
         const link = document.createElement('a');
-        link.href = window.URL.createObjectURL(blob);
-        link.download = 'wedding_invitation.ics';
+        link.href = url;
+        link.setAttribute('download', 'wedding_invitation.ics');
+        document.body.appendChild(link);
         link.click();
+        
+        setTimeout(() => {
+            document.body.removeChild(link);
+            window.URL.revokeObjectURL(url);
+            showToast("파일이 다운로드되었습니다. 실행 시 캘린더에 등록됩니다.");
+        }, 100);
     }
 </script>
 
