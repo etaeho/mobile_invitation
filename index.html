@@ -39,6 +39,29 @@
             -webkit-touch-callout: none;
             -webkit-user-drag: none;
         }
+
+        /* 전체 요소 선택 및 모바일 길게 누르기 방지 */
+        * { 
+            box-sizing: border-box; 
+            -webkit-tap-highlight-color: transparent;
+            -webkit-user-select: none; 
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            -webkit-touch-callout: none; 
+        }
+
+        /* 이미지 저장 및 드래그 방지 설정 */
+        img {
+            -webkit-touch-callout: none;
+            -webkit-user-drag: none;    
+            pointer-events: none;       
+        }
+        
+        /* 버튼 및 링크 등 인터랙션이 필요한 요소는 예외 처리 */
+        .btn-action, .account-btn, .nav-btn, .share-btn, .btn-copy-addr {
+            pointer-events: auto; 
+        }
         
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         html, body { margin: 0; padding: 0; background-color: #f0f0f0; font-family: 'Noto Serif KR', serif; color: var(--text-dark); word-break: keep-all; }
