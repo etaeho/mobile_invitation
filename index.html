@@ -631,55 +631,81 @@
         }, 100);
     }
 
-        // RSVP 제출 함수
-        window.submitRSVP = async function() {
-            const phone = document.getElementById('rsvpPhone').value.trim();
 
-            // 4자리 숫자 유효성 검사
-            if (!phone || phone.length !== 4 || isNaN(phone)) {
-                showToast("연락처 뒷자리 4자리를 정확히 입력해주세요.");
-                return;
-            }
+    function getFormattedDate() {
+        const n = new Date();
+        const f = (v) => String(v).padStart(2, '0');
+        return `${n.getFullYear()}${f(n.getMonth()+1)}${f(n.getDate())}${f(n.getHours())}${f(n.getMinutes())}${f(n.getSeconds())}`;
+    }
 
-            const btn = document.getElementById('rsvpSubmitBtn');
-            btn.disabled = true;
-            btn.innerText = "전송 중...";
+    window.submitRSVP = async function() {
+        if (!auth.currentUser) { 
+            window.showToast("인증 처리 중입니다. 잠시 후 다시 시도해주세요.");
+            await initAuth(); 
+            return; 
+        }
 
-            try {
-                const formattedDate = getFormattedDate();
+        const phone = document.getElementById('rsvpPhone').value.trim();
+        if (!phone || phone.length !== 4 || isNaN(phone)) {
+            window.showToast("연락처 뒷자리 4자리를 입력해주세요.");
+            return;
+        }
 
-                // 1. Firebase 데이터베이스 저장 (Rule 1 준수)
-                const rsvpRef = doc(db, 'artifacts', appId, 'public', 'data', 'rsvps', phone);
-                await setDoc(rsvpRef, { 
-                    phone: phone, 
-                    date: formattedDate,
-                    timestamp: serverTimestamp() 
+        const btn = document.getElementById('rsvpSubmitBtn');
+        btn.disabled = true; btn.innerText = "전송 중...";
+
+        try {
+            const dateStr = getFormattedDate();
+            const rsvpRef = doc(db, 'artifacts', appId, 'public', 'data', 'rsvps', phone);
+            await setDoc(rsvpRef, { phone, date: dateStr, timestamp: serverTimestamp() });
+
+            // 구글시트전송1
+            const scriptURL = 'https://script.google.com/macros/s/AKfycbzeCGRgb6B1kJfcgT33vrv0ha-EeoAwrfyrRPRtZB8P_pDIW8nptFT-BqAZvCPdhjV5/exec'; 
+            fetch(scriptURL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ phone: phone, date: dateStr })
+            });
+
+            window.showToast("전달되었습니다.");
+            document.getElementById('rsvpForm').style.display = 'none';
+            document.getElementById('rsvpSuccess').style.display = 'block';
+        } catch (error) {
+            console.error(error);
+            window.showToast("오류가 발생했습니다. 새로고침 후 시도해주세요.");
+            btn.disabled = false; btn.innerText = "참석 의사 전달하기";
+        }
+    };
+
+    const initKakaoMap = () => {
+        const container = document.getElementById('map');
+        if (!container) return;
+        const checkInterval = setInterval(() => {
+            if (typeof kakao !== 'undefined' && kakao.maps) {
+                clearInterval(checkInterval);
+                kakao.maps.load(() => {
+                    const pos = new kakao.maps.LatLng(36.349162, 127.438541);
+                    const map = new kakao.maps.Map(container, { center: pos, level: 3 });
+                    new kakao.maps.Marker({ position: pos }).setMap(map);
+                    setTimeout(() => map.relayout(), 200);
                 });
-
-                // 2. 구글 스프레드시트 전송
-                // 구글시트연동
-                const scriptURL = 'https://script.google.com/macros/s/AKfycbzeCGRgb6B1kJfcgT33vrv0ha-EeoAwrfyrRPRtZB8P_pDIW8nptFT-BqAZvCPdhjV5/exec'; 
-                
-                fetch(scriptURL, {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ 
-                        phone: phone, 
-                        date: formattedDate // yyyymmddhh24miss 형식
-                    })
-                });
-
-                showToast("참석 의사가 전달되었습니다. 감사합니다.");
-                document.getElementById('rsvpForm').style.display = 'none';
-                document.getElementById('rsvpSuccess').style.display = 'block';
-            } catch (error) {
-                console.error("데이터 저장 오류:", error);
-                showToast("전송에 실패했습니다. 다시 시도해주세요.");
-                btn.disabled = false;
-                btn.innerText = "참석 의사 전달하기";
             }
-        };
+        }, 200);
+        setTimeout(() => clearInterval(checkInterval), 5000);
+    };
+
+    window.addEventListener('load', () => {
+        initKakaoMap();
+        const target = new Date('2026-06-13').getTime();
+        const diff = Math.ceil((target - new Date().setHours(0,0,0,0)) / (1000 * 60 * 60 * 24));
+        const el = document.getElementById('dDayDisplay');
+        if (diff > 0) el.innerHTML = `결혼식이 <b>${diff}일</b> 남았습니다.`;
+        else if (diff === 0) el.innerHTML = `<b>저희 오늘 결혼합니다! 축복해 주세요.</b>`;
+        else el.innerHTML = `축복해주셔서 감사합니다.`;
+        initAuth();
+    });
+
 
         initAuth();
 </script>
