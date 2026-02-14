@@ -66,6 +66,12 @@
         .btn-action, .account-btn, .nav-btn, .share-btn, .btn-copy-addr, .map-btn {
             pointer-events: auto; /* 길찾기 */
         }
+        /* 티맵모바일활성화 */
+        @media (min-width: 1025px) {
+            .tmap-mobile-only {
+                display: none !important;
+            }
+        }
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         html, body { margin: 0; padding: 0; background-color: #f0f0f0; font-family: 'Noto Serif KR', serif; color: var(--text-dark); word-break: keep-all; }
         
@@ -370,7 +376,7 @@
         <div class="map-buttons">
             <a href="https://naver.me/x0OftcYl" target="_blank" class="map-btn">네이버 지도</a>
             <a href="https://map.kakao.com/link/to/호텔선샤인,36.349162,127.438541" target="_blank" class="map-btn">카카오내비</a>
-            <a href="intent://route?goalname=대전선샤인호텔&goalx=127.438541&goaly=36.349162#Intent;scheme=tmap;package=com.skt.tmap.ku;end" class="map-btn">티맵</a>
+            <a href="intent://route?goalname=대전선샤인호텔&goalx=127.438541&goaly=36.349162#Intent;scheme=tmap;package=com.skt.tmap.ku;end" target="_blank" class="map-btn tmap-mobile-only">
         </div>
     </section>
 
