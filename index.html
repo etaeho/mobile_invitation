@@ -25,7 +25,21 @@
             --gold-accent: #b2945b;
             --divider-color: #eeeae3;
         }
+        /* 드래그 및 선택 방지 CSS */
+        * { 
+            box-sizing: border-box; 
+            -webkit-tap-highlight-color: transparent;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
 
+        img {
+            -webkit-touch-callout: none;
+            -webkit-user-drag: none;
+        }
+        
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         html, body { margin: 0; padding: 0; background-color: #f0f0f0; font-family: 'Noto Serif KR', serif; color: var(--text-dark); word-break: keep-all; }
         
@@ -136,7 +150,7 @@
         }
     </style>
 </head>
-<body>
+<body oncontextmenu="return false" onselectstart="return false" ondragstart="return false">
 
 <div id="toast">복사되었습니다.</div>
 
@@ -311,6 +325,10 @@
         updateDDay();
     };
 
+    document.addEventListener('contextmenu', function(e) {
+        e.preventDefault();
+    }, false);
+    
     /* 디데이 계산 로직 추가 */
     function updateDDay() {
         const targetDate = new Date('2026-06-13');
