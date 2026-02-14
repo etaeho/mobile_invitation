@@ -356,6 +356,13 @@
             gap: 5px;
         }
 
+        /* RSVP 입력창 디자인 */
+        .rsvp-section { background-color: #f9f7f4; border-top: 1px solid var(--divider); border-bottom: 1px solid var(--divider); }
+        .rsvp-input { width: 100%; padding: 16px; border: 1px solid var(--divider); border-radius: 4px; margin-bottom: 12px; font-size: 1rem; outline: none; font-family: inherit; -webkit-user-select: auto; user-select: auto; text-align: center; letter-spacing: 8px; font-weight: 500; }
+        .rsvp-input:focus { border-color: var(--point-color); }
+        .btn-rsvp { width: 100%; padding: 18px; background-color: var(--point-color); color: #fff; border: none; border-radius: 4px; cursor: pointer; font-size: 1rem; font-family: inherit; }
+
+        
     </style>
 </head>
 <body oncontextmenu="return false" onselectstart="return false" ondragstart="return false">
@@ -495,6 +502,25 @@
         </div>
     </section>
 
+
+    <!-- RSVP (참석 여부 전달) -->
+    <section class="rsvp-section">
+        <div class="section-title">RSVP</div>
+        <div id="rsvpForm" style="max-width:320px; margin:0 auto;">
+            <p style="font-size:0.9rem; color:var(--text-sub); margin-bottom:25px; line-height: 1.6;">
+                예식 준비를 위해<br>연락처 뒷자리 4자리를 남겨주세요.
+            </p>
+            <!-- 이름 필드 삭제, 번호 4자리만 입력받음 -->
+            <input type="tel" id="rsvpPhone" class="rsvp-input" placeholder="0000" maxlength="4">
+            <button id="rsvpSubmitBtn" class="btn-rsvp" onclick="submitRSVP()">참석 의사 전달하기</button>
+        </div>
+        <div id="rsvpSuccess" style="display:none; padding:50px 0; color:var(--point-color); line-height: 1.8;">
+            <span style="font-size: 2.5rem;">🕊️</span><br><br>
+            <b>참석 의사가 잘 전달되었습니다.</b><br>
+            축복해 주셔서 감사합니다.
+        </div>
+    </section>
+    
     <!-- Footer -->
     <section class="footer-wrap">
         <button class="btn-share" onclick="copyText(window.location.href)">청첩장 링크 복사하기</button>
@@ -604,6 +630,58 @@
             showToast("파일이 다운로드되었습니다. 실행 시 캘린더에 등록됩니다.");
         }, 100);
     }
+
+        // RSVP 제출 함수
+        window.submitRSVP = async function() {
+            const phone = document.getElementById('rsvpPhone').value.trim();
+
+            // 4자리 숫자 유효성 검사
+            if (!phone || phone.length !== 4 || isNaN(phone)) {
+                showToast("연락처 뒷자리 4자리를 정확히 입력해주세요.");
+                return;
+            }
+
+            const btn = document.getElementById('rsvpSubmitBtn');
+            btn.disabled = true;
+            btn.innerText = "전송 중...";
+
+            try {
+                const formattedDate = getFormattedDate();
+
+                // 1. Firebase 데이터베이스 저장 (Rule 1 준수)
+                const rsvpRef = doc(db, 'artifacts', appId, 'public', 'data', 'rsvps', phone);
+                await setDoc(rsvpRef, { 
+                    phone: phone, 
+                    date: formattedDate,
+                    timestamp: serverTimestamp() 
+                });
+
+                // 2. 구글 스프레드시트 전송
+                // 구글시트연동
+                const scriptURL = 'https://script.google.com/macros/s/AKfycbzeCGRgb6B1kJfcgT33vrv0ha-EeoAwrfyrRPRtZB8P_pDIW8nptFT-BqAZvCPdhjV5/exec'; 
+                
+                fetch(scriptURL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ 
+                        phone: phone, 
+                        date: formattedDate // yyyymmddhh24miss 형식
+                    })
+                });
+
+                showToast("참석 의사가 전달되었습니다. 감사합니다.");
+                document.getElementById('rsvpForm').style.display = 'none';
+                document.getElementById('rsvpSuccess').style.display = 'block';
+            } catch (error) {
+                console.error("데이터 저장 오류:", error);
+                showToast("전송에 실패했습니다. 다시 시도해주세요.");
+                btn.disabled = false;
+                btn.innerText = "참석 의사 전달하기";
+            }
+        };
+
+        initAuth();
 </script>
 
 </body>
