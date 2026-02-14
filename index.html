@@ -503,14 +503,13 @@
     </section>
 
 
-    <!-- RSVP (참석 여부 전달) -->
+    <!-- RSVP 입력 섹션 (이름 삭제, 번호 4자리만) -->
     <section class="rsvp-section">
-        <div class="section-title">RSVP</div>
+        <div class="section-title">참석 여부 전달</div>
         <div id="rsvpForm" style="max-width:320px; margin:0 auto;">
             <p style="font-size:0.9rem; color:var(--text-sub); margin-bottom:25px; line-height: 1.6;">
-                예식 준비를 위해<br>연락처 뒷자리 4자리를 남겨주세요.
+                참석 가능하시다면, 예식 준비를 위해<br>연락처 뒷자리 4자리를 남겨주세요.
             </p>
-            <!-- 이름 필드 삭제, 번호 4자리만 입력받음 -->
             <input type="tel" id="rsvpPhone" class="rsvp-input" placeholder="0000" maxlength="4">
             <button id="rsvpSubmitBtn" class="btn-rsvp" onclick="submitRSVP()">참석 의사 전달하기</button>
         </div>
@@ -631,11 +630,60 @@
         }, 100);
     }
 
-        // RSVP 제출 함수
+    <!-- Firebase SDK 및 RSVP 연동 로직 -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // Firebase 설정 로드
+        const firebaseConfig = JSON.parse(__firebase_config);
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+
+        let currentUser = null;
+
+        // [인증] 익명 로그인 처리 (구글 시트/Firebase 데이터 저장을 위해 필수)
+        async function initAuth() {
+            try {
+                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                    await signInWithCustomToken(auth, __initial_auth_token);
+                } else {
+                    await signInAnonymously(auth);
+                }
+            } catch (error) { console.error("인증 실패:", error); }
+        }
+
+        onAuthStateChanged(auth, (user) => {
+            currentUser = user;
+            if (!user) initAuth();
+        });
+
+        // [날짜 형식] yyyymmddhh24miss 형식으로 변환하는 함수
+        function getFormattedDate() {
+            const now = new Date();
+            const year = now.getFullYear();
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const day = String(now.getDate()).padStart(2, '0');
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            return `${year}${month}${day}${hours}${minutes}${seconds}`;
+        }
+
+        // [RSVP 전송] 버튼 클릭 시 실행되는 메인 로직
+        // type="module" 내 함수는 외부에서 호출이 안되므로 window 객체에 할당
         window.submitRSVP = async function() {
+            if (!currentUser) {
+                showToast("인증 확인 중입니다. 잠시 후 다시 시도해주세요.");
+                return;
+            }
+
             const phone = document.getElementById('rsvpPhone').value.trim();
 
-            // 4자리 숫자 유효성 검사
+            // [입력 제한] 연락처 뒷자리 4자리 유효성 검사
             if (!phone || phone.length !== 4 || isNaN(phone)) {
                 showToast("연락처 뒷자리 4자리를 정확히 입력해주세요.");
                 return;
@@ -648,7 +696,7 @@
             try {
                 const formattedDate = getFormattedDate();
 
-                // 1. Firebase 데이터베이스 저장 (Rule 1 준수)
+                // 1. Firebase 데이터베이스 저장 (백업용)
                 const rsvpRef = doc(db, 'artifacts', appId, 'public', 'data', 'rsvps', phone);
                 await setDoc(rsvpRef, { 
                     phone: phone, 
@@ -656,8 +704,7 @@
                     timestamp: serverTimestamp() 
                 });
 
-                // 2. 구글 스프레드시트 전송
-                // 구글시트연동
+                // 2. 구글 스프레드시트 전송 (구글시트연동)
                 const scriptURL = 'https://script.google.com/macros/s/AKfycbzeCGRgb6B1kJfcgT33vrv0ha-EeoAwrfyrRPRtZB8P_pDIW8nptFT-BqAZvCPdhjV5/exec'; 
                 
                 fetch(scriptURL, {
@@ -666,7 +713,7 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ 
                         phone: phone, 
-                        date: formattedDate // yyyymmddhh24miss 형식
+                        date: formattedDate // yyyymmddhh24miss 형식 적용
                     })
                 });
 
