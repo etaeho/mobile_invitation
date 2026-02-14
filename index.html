@@ -569,31 +569,48 @@
         copyText(window.location.href);
     }
     
-    /* 일정추가: 톡캘린더 */
-    function addKakaoCalendarEvent() {
+    
+    /* 일정추가: 카카오톡 내부 메시지 카드에 일정 등록 버튼 추가 함수 */
+    function sendKakaoInvitation() {
         if (typeof Kakao !== 'undefined' && Kakao.isInitialized()) {
-            try {
-                // Kakao 공식 TalkCalendar API 호출
-                Kakao.TalkCalendar.createCustomEvent({
-                    event: {
-                        title: '이태호 ❤ 박찬미 결혼식',
-                        description: '저희 두 사람의 결혼식에 초대합니다.',
-                        startTime: '2026-06-13T14:30:00Z',
-                        endTime: '2026-06-13T15:30:00Z',
-                        location: '호텔선샤인 7층 씨엘드 포레',
-                        reminders: [15, 60]
-                    }
-                });
-            } catch (e) {
-                // SDK 호출 실패 시 웹 링크 방식 fallback
-                const fallbackUrl = `https://calendar.kakao.com/link/add?title=${encodeURIComponent('이태호 & 박찬미 결혼식')}&startDate=20260613T143000&endDate=20260613T163000&location=${encodeURIComponent('호텔선샤인 7층 씨엘드 포레')}`;
-                window.open(fallbackUrl, '_blank');
-            }
+            const inviteUrl = window.location.href;
+            // 일정추가: 카카오 캘린더 등록용 웹 링크 (SDK 버튼 내 링크로 사용)
+            const calendarUrl = `https://calendar.kakao.com/link/add?title=${encodeURIComponent('이태호 & 박찬미 결혼식')}&startDate=20260613T143000&endDate=20260613T163000&location=${encodeURIComponent('호텔선샤인 7층 씨엘드 포레')}&description=${encodeURIComponent('저희 두 사람의 결혼식에 소중한 분들을 초대합니다.')}`;
+
+            Kakao.Share.sendDefault({
+                objectType: 'feed',
+                content: {
+                    title: '이태호 ❤ 박찬미 결혼식에 초대합니다',
+                    description: '2026년 6월 13일 토요일 오후 2:30\n호텔선샤인 7층 씨엘드 포레',
+                    imageUrl: 'https://cdn.pixabay.com/photo/2016/11/21/15/58/wedding-1846114_1280.jpg', 
+                    link: {
+                        mobileWebUrl: inviteUrl,
+                        webUrl: inviteUrl,
+                    },
+                },
+                buttons: [
+                    {
+                        title: '청첩장 보기',
+                        link: {
+                            mobileWebUrl: inviteUrl,
+                            webUrl: inviteUrl,
+                        },
+                    },
+                    /* 일정추가: 카카오톡 내부 메시지에 생성되는 일정 등록 버튼 */
+                    {
+                        title: '일정 등록하기',
+                        link: {
+                            mobileWebUrl: calendarUrl,
+                            webUrl: calendarUrl,
+                        },
+                    },
+                ],
+            });
         } else {
-            const fallbackUrl = `https://calendar.kakao.com/link/add?title=${encodeURIComponent('이태호 & 박찬미 결혼식')}&startDate=20260613T143000&endDate=20260613T163000&location=${encodeURIComponent('호텔선샤인 7층 씨엘드 포레')}`;
-            window.open(fallbackUrl, '_blank');
+            showToast("카카오톡 로딩 중입니다.");
         }
     }
+    
     /* 일정추가: iCal 파일 다운로드 및 일정 앱 등록 기능 */
     function downloadIcs() {
         const icsData = [
