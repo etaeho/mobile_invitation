@@ -503,21 +503,18 @@
     </section>
 
 
-    <!-- RSVP (참석 여부 전달) -->
+    <!-- RSVP 섹션 -->
     <section class="rsvp-section">
         <div class="section-title">RSVP</div>
         <div id="rsvpForm" style="max-width:320px; margin:0 auto;">
-            <p style="font-size:0.9rem; color:var(--text-sub); margin-bottom:25px; line-height: 1.6;">
-                예식 준비를 위해<br>연락처 뒷자리 4자리를 남겨주세요.
+            <p style="font-size:0.9rem; color:var(--text-sub); margin-bottom:25px;">
+                참석 가능하시다면, 예식 준비를 위해<br>연락처 뒷자리 4자리를 남겨주세요.
             </p>
-            <!-- 이름 필드 삭제, 번호 4자리만 입력받음 -->
             <input type="tel" id="rsvpPhone" class="rsvp-input" placeholder="0000" maxlength="4">
             <button id="rsvpSubmitBtn" class="btn-rsvp" onclick="submitRSVP()">참석 의사 전달하기</button>
         </div>
-        <div id="rsvpSuccess" style="display:none; padding:50px 0; color:var(--point-color); line-height: 1.8;">
-            <span style="font-size: 2.5rem;">🕊️</span><br><br>
-            <b>참석 의사가 잘 전달되었습니다.</b><br>
-            축복해 주셔서 감사합니다.
+        <div id="rsvpSuccess" style="display:none; padding:50px 0; color:var(--point-color);">
+            🕊️<br><br><b>참석 의사가 잘 전달되었습니다.</b>
         </div>
     </section>
     
