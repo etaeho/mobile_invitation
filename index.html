@@ -31,6 +31,7 @@
             box-sizing: border-box; 
             -webkit-tap-highlight-color: transparent;
             word-break: keep-all;
+            /* 전역 선택 방지 */
             -webkit-user-select: none;
             -moz-user-select: none;
             -ms-user-select: none;
@@ -48,7 +49,7 @@
         }
 
         /* 버튼 및 링크 등 인터랙션 요소는 예외 처리 */
-        button, a, input, .acc-btn, .btn-sm, .btn-nav, .btn-share, .slider-btn, .btn-cal {
+        button, a, .acc-btn, .btn-sm, .btn-nav, .btn-share, .slider-btn, .btn-cal {
             user-select: auto;
             pointer-events: auto;
         }
@@ -305,12 +306,6 @@
             border-radius: 4px;
         }
 
-        /* RSVP 입력창 디자인 */
-        .rsvp-section { background-color: #f9f7f4; border-top: 1px solid var(--divider); border-bottom: 1px solid var(--divider); }
-        .rsvp-input { width: 100%; padding: 16px; border: 1px solid var(--divider); border-radius: 4px; margin-bottom: 12px; font-size: 1rem; outline: none; font-family: inherit; text-align: center; letter-spacing: 8px; font-weight: 500; background: #fff; }
-        .rsvp-input:focus { border-color: var(--point-color); }
-        .btn-rsvp { width: 100%; padding: 18px; background-color: var(--point-color); color: #fff; border: none; border-radius: 4px; cursor: pointer; font-size: 1rem; font-family: inherit; }
-
         /* 하단 공유 */
         .footer-wrap { padding: 60px 24px; background: var(--white); border-top: 1px solid var(--divider); }
         .btn-share {
@@ -361,9 +356,16 @@
             gap: 5px;
         }
 
+        /* RSVP 입력창 디자인 */
+        .rsvp-section { background-color: #f9f7f4; border-top: 1px solid var(--divider); border-bottom: 1px solid var(--divider); }
+        .rsvp-input { width: 100%; padding: 16px; border: 1px solid var(--divider); border-radius: 4px; margin-bottom: 12px; font-size: 1rem; outline: none; font-family: inherit; -webkit-user-select: auto; user-select: auto; text-align: center; letter-spacing: 8px; font-weight: 500; }
+        .rsvp-input:focus { border-color: var(--point-color); }
+        .btn-rsvp { width: 100%; padding: 18px; background-color: var(--point-color); color: #fff; border: none; border-radius: 4px; cursor: pointer; font-size: 1rem; font-family: inherit; }
+
+        
     </style>
 </head>
-<body>
+<body oncontextmenu="return false" onselectstart="return false" ondragstart="return false">
 
 <div id="toast">복사되었습니다.</div>
 
@@ -409,21 +411,21 @@
         <div class="section-title">Gallery</div>
         <div class="slider-container">
             <div class="slider-track" id="mainSlider">
-                <div class="slide"><img src="./images/photo1.jpg" alt="1"></div>
-                <div class="slide"><img src="./images/photo2.jpg" alt="2"></div>
-                <div class="slide"><img src="./images/photo3.jpg" alt="3"></div>
-                <div class="slide"><img src="./images/photo4.jpg" alt="4"></div>
-                <div class="slide"><img src="./images/photo5.jpg" alt="5"></div>
-                <div class="slide"><img src="./images/photo6.jpg" alt="6"></div>
-                <div class="slide"><img src="./images/photo7.jpg" alt="7"></div>
-                <div class="slide"><img src="./images/photo8.jpg" alt="8"></div>
-                <div class="slide"><img src="./images/photo9.jpg" alt="9"></div>
-                <div class="slide"><img src="./images/photo10.jpg" alt="10"></div>
-                <div class="slide"><img src="./images/photo11.jpg" alt="11"></div>
-                <div class="slide"><img src="./images/photo12.jpg" alt="12"></div>
-                <div class="slide"><img src="./images/photo13.jpg" alt="13"></div>
-                <div class="slide"><img src="./images/photo14.jpg" alt="14"></div>
-                <div class="slide"><img src="./images/photo15.jpg" alt="15"></div>
+                <div class="slide"><img src="./images/photo1.jpg" alt="photo"></div>
+                <div class="slide"><img src="./images/photo2.jpg" alt="photo"></div>
+                <div class="slide"><img src="./images/photo3.jpg" alt="photo"></div>
+                <div class="slide"><img src="./images/photo4.jpg" alt="photo"></div>
+                <div class="slide"><img src="./images/photo5.jpg" alt="photo"></div>
+                <div class="slide"><img src="./images/photo6.jpg" alt="photo"></div>
+                <div class="slide"><img src="./images/photo7.jpg" alt="photo"></div>
+                <div class="slide"><img src="./images/photo8.jpg" alt="photo"></div>
+                <div class="slide"><img src="./images/photo9.jpg" alt="photo"></div>
+                <div class="slide"><img src="./images/photo10.jpg" alt="photo"></div>
+                <div class="slide"><img src="./images/photo11.jpg" alt="photo"></div>
+                <div class="slide"><img src="./images/photo12.jpg" alt="photo"></div>
+                <div class="slide"><img src="./images/photo13.jpg" alt="photo"></div>
+                <div class="slide"><img src="./images/photo14.jpg" alt="photo"></div>
+                <div class="slide"><img src="./images/photo15.jpg" alt="photo"></div>
             </div>
             <button class="slider-btn" style="left:12px;" onclick="moveSlider(-1)">❮</button>
             <button class="slider-btn" style="right:12px;" onclick="moveSlider(1)">❯</button>
@@ -453,7 +455,32 @@
         <div id="dDayDisplay" class="d-day-info"></div>
 
         <div class="cal-actions">
-            <button class="btn-cal" onclick="downloadIcs()">📅 아이폰/갤럭시 캘린더 등록</button>
+            <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=이태호+박찬미+결혼식&dates=20260613T053000Z/20260613T073000Z&location=호텔선샤인+7층+씨엘드+포레" target="_blank" class="btn-cal">구글 캘린더 등록</a>
+        </div>
+    </section>
+
+    <!-- Account -->
+    <section class="account">
+        <button class="acc-btn" onclick="toggleAccordion('groomAcc')">신랑측 마음 전하실 곳 <span style="font-size:0.7rem; opacity:0.5;">▼</span></button>
+        <div id="groomAcc" class="acc-content">
+            <div class="acc-row">
+                <div class="acc-info"><b>신랑 이태호</b><br>신한은행 110-305-074845</div>
+                <div class="acc-actions">
+                    <button class="btn-sm" onclick="copyText('신한은행 110-305-074845')">계좌복사</button>
+                    <a href="https://qr.kakaopay.com/Ej9Dvvipo" class="btn-sm">카카오페이</a>
+                </div>
+            </div>
+        </div>
+
+        <button class="acc-btn" onclick="toggleAccordion('brideAcc')">신부측 마음 전하실 곳 <span style="font-size:0.7rem; opacity:0.5;">▼</span></button>
+        <div id="brideAcc" class="acc-content">
+            <div class="acc-row">
+                <div class="acc-info"><b>신부 박찬미</b><br>카카오뱅크 3333-13-0100109</div>
+                <div class="acc-actions">
+                    <button class="btn-sm" onclick="copyText('카카오뱅크 3333-13-0100109')">계좌복사</button>
+                    <a href="https://qr.kakaopay.com/Ej9CftMRN" class="btn-sm">카카오페이</a>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -470,17 +497,20 @@
 
         <div class="map-nav">
             <a href="https://naver.me/x0OftcYl" target="_blank" class="btn-nav">네이버 지도</a>
-            <a href="https://map.kakao.com/link/to/호텔선샤인웨딩홀 주차장,36.349162,127.438541" target="_blank" class="btn-nav">카카오 지도</a>
+            <a href="https://map.kakao.com/link/to/호텔선샤인웨딩홀 주차장,36.349162,127.438541" target="_blank" class="btn-nav">카카오내비</a>
+            <a href="tmap://route?goalname=호텔선샤인 주차장&goalx=127.438541&goaly=36.349162" class="btn-nav">티맵</a>
         </div>
     </section>
 
-    <!-- RSVP 입력 섹션 (이름 삭제, 번호 4자리만) -->
+
+    <!-- RSVP (참석 여부 전달) -->
     <section class="rsvp-section">
         <div class="section-title">RSVP</div>
         <div id="rsvpForm" style="max-width:320px; margin:0 auto;">
             <p style="font-size:0.9rem; color:var(--text-sub); margin-bottom:25px; line-height: 1.6;">
-                참석 가능하시다면, 예식 준비를 위해<br>연락처 뒷자리 4자리를 남겨주세요.
+                예식 준비를 위해<br>연락처 뒷자리 4자리를 남겨주세요.
             </p>
+            <!-- 이름 필드 삭제, 번호 4자리만 입력받음 -->
             <input type="tel" id="rsvpPhone" class="rsvp-input" placeholder="0000" maxlength="4">
             <button id="rsvpSubmitBtn" class="btn-rsvp" onclick="submitRSVP()">참석 의사 전달하기</button>
         </div>
@@ -488,32 +518,6 @@
             <span style="font-size: 2.5rem;">🕊️</span><br><br>
             <b>참석 의사가 잘 전달되었습니다.</b><br>
             축복해 주셔서 감사합니다.
-        </div>
-    </section>
-
-    <!-- Account -->
-    <section class="account">
-        <div class="section-title">Gifts</div>
-        <button class="acc-btn" onclick="toggleAccordion('groomAcc')">신랑측 마음 전하실 곳 <span style="font-size:0.7rem; opacity:0.5;">▼</span></button>
-        <div id="groomAcc" class="acc-content">
-            <div class="acc-row">
-                <div class="acc-info"><b>신랑 이태호</b><br>신한은행 110-305-074845</div>
-                <div class="acc-actions">
-                    <button class="btn-sm" onclick="copyText('신한은행 110-305-074845')">계좌복사</button>
-                    <a href="https://qr.kakaopay.com/Ej9Dvvipo" class="btn-sm" target="_blank">카카오페이</a>
-                </div>
-            </div>
-        </div>
-
-        <button class="acc-btn" onclick="toggleAccordion('brideAcc')">신부측 마음 전하실 곳 <span style="font-size:0.7rem; opacity:0.5;">▼</span></button>
-        <div id="brideAcc" class="acc-content">
-            <div class="acc-row">
-                <div class="acc-info"><b>신부 박찬미</b><br>카카오뱅크 3333-13-0100109</div>
-                <div class="acc-actions">
-                    <button class="btn-sm" onclick="copyText('카카오뱅크 3333-13-0100109')">계좌복사</button>
-                    <a href="https://qr.kakaopay.com/Ej9CftMRN" class="btn-sm" target="_blank">카카오페이</a>
-                </div>
-            </div>
         </div>
     </section>
     
@@ -524,154 +528,160 @@
     </section>
 </div>
 
-<!-- 통합 스크립트 (Firebase 및 모든 UI 기능) -->
-<script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-    import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-    import { getFirestore, doc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-
-    // 1. Firebase 초기화
-    const firebaseConfig = JSON.parse(__firebase_config);
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getFirestore(app);
-    const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
-
-    // 2. 인증 관리 (Firestore 권한 확보를 위해 필수)
-    async function initAuth() {
-        try {
-            if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-                await signInWithCustomToken(auth, __initial_auth_token);
-            } else {
-                await signInAnonymously(auth);
-            }
-        } catch (error) {
-            console.error("인증 처리 오류:", error);
-        }
-    }
-
-    onAuthStateChanged(auth, (user) => {
-        if (!user) initAuth();
-    });
-
-    // 3. 날짜 형식 변환 (yyyymmddhh24miss)
-    function getFormattedDate() {
-        const now = new Date();
-        const f = (n) => String(n).padStart(2, '0');
-        return `${now.getFullYear()}${f(now.getMonth()+1)}${f(now.getDate())}${f(now.getHours())}${f(now.getMinutes())}${f(now.getSeconds())}`;
-    }
-
-    // 4. RSVP 전송 로직 (window 객체 바인딩)
-    window.submitRSVP = async function() {
-        if (!auth.currentUser) {
-            window.showToast("인증 확인 중입니다. 1~2초 후 다시 시도해주세요.");
-            await initAuth();
-            return;
-        }
-
-        const phone = document.getElementById('rsvpPhone').value.trim();
-        if (!phone || phone.length !== 4 || isNaN(phone)) {
-            window.showToast("연락처 뒷자리 4자리를 정확히 입력해주세요.");
-            return;
-        }
-
-        const btn = document.getElementById('rsvpSubmitBtn');
-        btn.disabled = true;
-        btn.innerText = "전송 중...";
-
-        try {
-            const dateStr = getFormattedDate();
-
-            // Firebase 저장 (Rule 1 준수)
-            const rsvpRef = doc(db, 'artifacts', appId, 'public', 'data', 'rsvps', phone);
-            await setDoc(rsvpRef, { phone, date: dateStr, timestamp: serverTimestamp() });
-
-            // 구글시트연동
-            const scriptURL = 'https://script.google.com/macros/s/AKfycbzeCGRgb6B1kJfcgT33vrv0ha-EeoAwrfyrRPRtZB8P_pDIW8nptFT-BqAZvCPdhjV5/exec'; 
-            fetch(scriptURL, {
-                method: 'POST',
-                mode: 'no-cors',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ phone, date: dateStr })
-            });
-
-            window.showToast("전달되었습니다.");
-            document.getElementById('rsvpForm').style.display = 'none';
-            document.getElementById('rsvpSuccess').style.display = 'block';
-        } catch (error) {
-            console.error("전송 오류:", error);
-            window.showToast("권한 오류가 발생했습니다. 페이지를 새로고침 해주세요.");
-            btn.disabled = false;
-            btn.innerText = "참석 의사 전달하기";
-        }
-    };
-
-    // 5. 카카오 지도 초기화
-    const initKakaoMap = () => {
+<script>
+    /* 카카오 지도 */
+    window.onload = function() {
         if (typeof kakao !== 'undefined' && kakao.maps) {
-            kakao.maps.load(() => {
-                const container = document.getElementById('map');
-                const pos = new kakao.maps.LatLng(36.349162, 127.438541);
-                const options = { center: pos, level: 3 };
-                const map = new kakao.maps.Map(container, options);
-                new kakao.maps.Marker({ position: pos }).setMap(map);
+            kakao.maps.load(function() {
+                var container = document.getElementById('map');
+                var pos = new kakao.maps.LatLng(36.349162, 127.438541);
+                var options = { center: pos, level: 3 };
+                var map = new kakao.maps.Map(container, options);
+                var marker = new kakao.maps.Marker({ position: pos });
+                marker.setMap(map);
             });
         }
+        updateDDay();
     };
 
-    // 6. 디데이 및 기타 UI 초기화
-    window.addEventListener('load', () => {
-        initKakaoMap();
-        
+    /* 디데이 */
+    function updateDDay() {
         const target = new Date('2026-06-13').getTime();
         const now = new Date().setHours(0,0,0,0);
-        const days = Math.ceil((target - now) / (1000 * 60 * 60 * 24));
+        const diff = target - now;
+        const days = Math.ceil(diff / (1000 * 60 * 60 * 24));
+        
         const el = document.getElementById('dDayDisplay');
-        if (days > 0) el.innerHTML = `결혼식이 <b>${days}일</b> 남았습니다.`;
+        if (days > 0) el.innerHTML = `태호 ❤ 찬미의 결혼식이 <b>${days}일</b> 남았습니다.`;
         else if (days === 0) el.innerHTML = `<b>저희 오늘 결혼합니다! 축복해 주세요.</b>`;
-        else el.innerHTML = `축복해주셔서 감사합니다.`;
+        else el.innerHTML = `축복해주셔서 감사합니다. 예쁘게 살겠습니다.`;
+    }
 
-        initAuth();
-    });
-
-    // 갤러리 슬라이더
-    let cur = 0;
-    window.moveSlider = (dir) => {
-        cur = (cur + dir + 15) % 15;
-        document.getElementById('mainSlider').style.transform = `translateX(-${cur * 100}%)`;
-    };
-    setInterval(() => window.moveSlider(1), 5000);
-
-    // 유틸리티 함수
-    window.showToast = (m) => {
+    /* 토스트 및 복사 */
+    function showToast(m) {
         const t = document.getElementById('toast');
-        t.innerText = m; t.classList.add('show');
-        setTimeout(() => t.classList.remove('show'), 2500);
-    };
+        t.innerText = m;
+        t.classList.add('show');
+        setTimeout(()=>t.classList.remove('show'), 2500);
+    }
 
-    window.copyText = (val) => {
+    function copyText(val) {
         const temp = document.createElement("textarea");
-        temp.value = val; document.body.appendChild(temp);
-        temp.select(); document.execCommand('copy');
+        temp.value = val;
+        document.body.appendChild(temp);
+        temp.select();
+        document.execCommand('copy');
         document.body.removeChild(temp);
-        window.showToast("복사되었습니다.");
-    };
+        showToast("복사되었습니다.");
+    }
 
-    window.toggleAccordion = (id) => {
+    /* 아코디언 */
+    function toggleAccordion(id) {
         const el = document.getElementById(id);
         const isShow = el.classList.contains('show');
         document.querySelectorAll('.acc-content').forEach(c => c.classList.remove('show'));
         if (!isShow) el.classList.add('show');
-    };
+    }
 
-    window.downloadIcs = () => {
-        const ics = ["BEGIN:VCALENDAR", "VERSION:2.0", "BEGIN:VEVENT", "DTSTART:20260613T053000Z", "DTEND:20260613T073000Z", "SUMMARY:이태호 ❤ 박찬미 결혼식", "LOCATION:호텔선샤인 7층 씨엘드 포레", "END:VEVENT", "END:VCALENDAR"].join("\r\n");
-        const blob = new Blob([ics], { type: 'text/calendar;charset=utf-8' });
+    /* 갤러리 슬라이더 */
+    let cur = 0;
+    const total = 15;
+    const track = document.getElementById('mainSlider');
+
+    function moveSlider(dir) {
+        cur = (cur + dir + total) % total;
+        track.style.transform = `translateX(-${cur * 100}%)`;
+    }
+
+    let auto = setInterval(()=>moveSlider(1), 5000);
+    track.addEventListener('touchstart', () => clearInterval(auto), {passive: true});
+
+    /* ICS 다운로드 (표준 규격 최적화) */
+    function downloadIcs() {
+        const icsData = [
+            "BEGIN:VCALENDAR",
+            "VERSION:2.0",
+            "PRODID:-//LeePark//WeddingInvitation//KO",
+            "CALSCALE:GREGORIAN",
+            "METHOD:PUBLISH",
+            "BEGIN:VEVENT",
+            "UID:wedding-20260613-lee-park@wedding.invitation",
+            "DTSTAMP:20260215T024700Z",
+            "DTSTART:20260613T053000Z", // KST 14:30
+            "DTEND:20260613T073000Z",   // KST 16:30
+            "SUMMARY:이태호 ❤ 박찬미 결혼식",
+            "DESCRIPTION:저희 두 사람의 새로운 출발을 함께 축복해 주세요.",
+            "LOCATION:호텔선샤인 7층 씨엘드 포레",
+            "END:VEVENT",
+            "END:VCALENDAR"
+        ].join("\r\n");
+
+        const blob = new Blob([icsData], { type: 'text/calendar;charset=utf-8' });
         const url = window.URL.createObjectURL(blob);
-        const l = document.createElement('a'); l.href = url; l.setAttribute('download', 'wedding.ics');
-        document.body.appendChild(l); l.click();
-        setTimeout(() => { document.body.removeChild(l); window.URL.revokeObjectURL(url); }, 100);
-    };
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', 'wedding_invitation.ics');
+        document.body.appendChild(link);
+        link.click();
+        
+        setTimeout(() => {
+            document.body.removeChild(link);
+            window.URL.revokeObjectURL(url);
+            showToast("파일이 다운로드되었습니다. 실행 시 캘린더에 등록됩니다.");
+        }, 100);
+    }
+
+        // RSVP 제출 함수
+        window.submitRSVP = async function() {
+            const phone = document.getElementById('rsvpPhone').value.trim();
+
+            // 4자리 숫자 유효성 검사
+            if (!phone || phone.length !== 4 || isNaN(phone)) {
+                showToast("연락처 뒷자리 4자리를 정확히 입력해주세요.");
+                return;
+            }
+
+            const btn = document.getElementById('rsvpSubmitBtn');
+            btn.disabled = true;
+            btn.innerText = "전송 중...";
+
+            try {
+                const formattedDate = getFormattedDate();
+
+                // 1. Firebase 데이터베이스 저장 (Rule 1 준수)
+                const rsvpRef = doc(db, 'artifacts', appId, 'public', 'data', 'rsvps', phone);
+                await setDoc(rsvpRef, { 
+                    phone: phone, 
+                    date: formattedDate,
+                    timestamp: serverTimestamp() 
+                });
+
+                // 2. 구글 스프레드시트 전송
+                // 구글시트연동
+                const scriptURL = 'https://script.google.com/macros/s/AKfycbzeCGRgb6B1kJfcgT33vrv0ha-EeoAwrfyrRPRtZB8P_pDIW8nptFT-BqAZvCPdhjV5/exec'; 
+                
+                fetch(scriptURL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ 
+                        phone: phone, 
+                        date: formattedDate // yyyymmddhh24miss 형식
+                    })
+                });
+
+                showToast("참석 의사가 전달되었습니다. 감사합니다.");
+                document.getElementById('rsvpForm').style.display = 'none';
+                document.getElementById('rsvpSuccess').style.display = 'block';
+            } catch (error) {
+                console.error("데이터 저장 오류:", error);
+                showToast("전송에 실패했습니다. 다시 시도해주세요.");
+                btn.disabled = false;
+                btn.innerText = "참석 의사 전달하기";
+            }
+        };
+
+        initAuth();
 </script>
 
 </body>
