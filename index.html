@@ -18,8 +18,8 @@
     
     <style>
         :root {
-            --bg-color: #fdfbf7; /* 부드러운 미색 */
-            --point-color: #b2945b; /* 차분한 골드 */
+            --bg-color: #fdfbf7;
+            --point-color: #b2945b;
             --text-main: #333333;
             --text-sub: #777777;
             --divider: #eeeae3;
@@ -110,28 +110,46 @@
         /* 초대 문구 */
         .invitation { background-color: var(--white); }
         .invitation-text {
-            line-height: 2.4;
+            line-height: 2.2;
             font-weight: 300;
             font-size: 0.95rem;
             color: #444;
             margin-bottom: 50px;
         }
-        .family-relation {
-            margin-top: 40px;
-            font-size: 1rem;
-            font-weight: 300;
-            display: inline-block;
+        
+        /* 서열/관계 스타일 (이전 버전 복구 및 정렬 최적화) */
+        .family-relation { 
+            display: flex; 
+            flex-direction: column; 
+            gap: 12px; 
+            font-size: 1rem; 
+            font-weight: 300; 
+            color: var(--text-main);
+            margin-top: 20px;
+            align-items: center;
+        }
+        .relation-row { 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+        }
+        .parents { 
+            font-size: 1rem; 
+            letter-spacing: 1px;
+            width: 130px; 
+            text-align: right;
+        }
+        .relation-text { 
+            font-size: 0.8rem; 
+            color: #b2b2b2; 
+            margin: 0 12px;
+        }
+        .couple-name { 
+            font-size: 1rem; 
+            font-weight: 400; 
+            width: 70px; 
             text-align: left;
         }
-        .relation-row {
-            margin-bottom: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .parents { width: 110px; text-align: right; letter-spacing: 1px; }
-        .relation-text { font-size: 0.75rem; color: #999; margin: 0 15px; }
-        .couple-name { width: 70px; text-align: left; font-weight: 400; }
 
         /* 갤러리 슬라이더 */
         .gallery-wrap { padding: 80px 0; background-color: var(--white); }
@@ -159,12 +177,13 @@
         .slider-btn {
             position: absolute;
             top: 50%; transform: translateY(-50%);
-            background: rgba(255,255,255,0.6);
+            background: rgba(255,255,255,0.4);
             border: none;
-            width: 40px; height: 40px;
+            width: 44px; height: 44px;
             border-radius: 50%;
             z-index: 10;
-            font-size: 0.8rem;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1rem;
             cursor: pointer;
             pointer-events: auto;
         }
@@ -182,6 +201,7 @@
             border-top: 1px solid var(--divider);
             border-bottom: 1px solid var(--divider);
             padding: 30px 0;
+            border-collapse: collapse;
         }
         .calendar-table th { padding-bottom: 15px; font-weight: 400; color: var(--point-color); font-size: 0.75rem; }
         .calendar-table td { height: 40px; font-size: 0.9rem; font-weight: 300; }
@@ -342,13 +362,12 @@
     <section class="invitation">
         <div class="section-title">Invitation</div>
         <div class="invitation-text">
-            우연으로 만난 저희가 서로를 길들이며<br>
-            세상에 단 하나뿐인 소중한 꽃이 되었습니다.<br><br>
-            무엇을 바라는 기대의 마음을 내려놓고,<br>
-            무엇을 줄 수 있을지 고민하는<br>
-            기여의 삶을 시작하려 합니다.<br><br>
-            저희의 첫 출발을 축복해 주시는 그 마음과<br>
-            따듯한 진심을 평생 소중히 간직하겠습니다.
+            우연으로 만난 저희가 서로를 길들이며 세상에 단 하나뿐인<br>
+            소중한 꽃이 되었습니다.<br>
+            무엇을 바라는 기대의 마음을 내려놓고, 무엇을 줄 수 있을지<br>
+            고민하는 기여의 삶을 시작하려 합니다.<br>
+            저희의 첫 출발을 축복해 주시는 그 마음과 따듯한 진심을<br>
+            평생 소중히 간직하겠습니다.
         </div>
 
         <div class="family-relation">
@@ -370,7 +389,6 @@
         <div class="section-title">Gallery</div>
         <div class="slider-container">
             <div class="slider-track" id="mainSlider">
-                <!-- 15장의 이미지 생성 -->
                 <div class="slide"><img src="./images/photo1.jpg" alt="photo"></div>
                 <div class="slide"><img src="./images/photo2.jpg" alt="photo"></div>
                 <div class="slide"><img src="./images/photo3.jpg" alt="photo"></div>
@@ -387,8 +405,8 @@
                 <div class="slide"><img src="./images/photo14.jpg" alt="photo"></div>
                 <div class="slide"><img src="./images/photo15.jpg" alt="photo"></div>
             </div>
-            <button class="slider-btn" style="left:15px;" onclick="moveSlider(-1)">❮</button>
-            <button class="slider-btn" style="right:15px;" onclick="moveSlider(1)">❯</button>
+            <button class="slider-btn" style="left:12px;" onclick="moveSlider(-1)">❮</button>
+            <button class="slider-btn" style="right:12px;" onclick="moveSlider(1)">❯</button>
         </div>
     </section>
 
@@ -421,10 +439,7 @@
     </section>
 
     <!-- Account -->
-    <section class="account">
-        <div class="section-title">Gifts</div>
-        <div style="font-size: 0.9rem; color: var(--text-sub); margin-bottom: 30px;">축복해주시는 따뜻한 마음을<br>소중히 간직하겠습니다.</div>
-        
+    <section class="account">        
         <button class="acc-btn" onclick="toggleAccordion('groomAcc')">신랑측 마음 전하실 곳 <span style="font-size:0.7rem; opacity:0.5;">▼</span></button>
         <div id="groomAcc" class="acc-content">
             <div class="acc-row">
@@ -538,7 +553,6 @@
         track.style.transform = `translateX(-${cur * 100}%)`;
     }
 
-    // 자동 슬라이드 (사용자 터치 시 중단)
     let auto = setInterval(()=>moveSlider(1), 5000);
     track.addEventListener('touchstart', () => clearInterval(auto), {passive: true});
 
