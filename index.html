@@ -143,9 +143,9 @@
                 </div>
             </div>
             <div class="account-item">
-                <div class="account-info"><b>혼주 강희선</b><br>신한은행 110-305-074845</div>
+                <div class="account-info"><b>혼주 강희선</b><br>신한은행 110-305-00000</div>
                 <div class="button-group">
-                    <button class="btn-action" onclick="copyText('110-305-074845')">계좌 복사</button>
+                    <button class="btn-action" onclick="copyText('110-305-00000')">계좌 복사</button>
                     <a href="https://qr.kakaopay.com/Ej9Dvvipo" class="btn-action btn-kakao">카카오페이 송금</a>
                 </div>
             </div>
@@ -222,7 +222,7 @@
     function copyText(text) {
         if (navigator.clipboard && window.isSecureContext) {
             navigator.clipboard.writeText(text).then(() => {
-                alert("복사되었습니다: " + text);
+                alert(text);
             });
         } else {
             // 구형 브라우저나 일부 모바일 대응
@@ -232,7 +232,7 @@
             textArea.select();
             try {
                 document.execCommand('copy');
-                alert("복사되었습니다: " + text);
+                alert(text);
             } catch (err) {
                 console.error('복사 실패', err);
             }
@@ -260,6 +260,11 @@
     function handleNav(dir) {
         stopAutoSlide();
         moveSlide(dir);
+    }
+
+    // 페이지 URL 복사
+    function copyPageUrl() {
+        copyText(window.location.href);
     }
 
     slider.addEventListener('touchstart', stopAutoSlide, {passive: true});
