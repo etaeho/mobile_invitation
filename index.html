@@ -62,7 +62,10 @@
         .btn-action, .account-btn, .nav-btn, .share-btn, .btn-copy-addr {
             pointer-events: auto; 
         }
-        
+        /* 버튼 및 링크 등 인터랙션이 필요한 요소는 예외 처리 */
+        .btn-action, .account-btn, .nav-btn, .share-btn, .btn-copy-addr, .map-btn {
+            pointer-events: auto; /* 길찾기 */
+        }
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         html, body { margin: 0; padding: 0; background-color: #f0f0f0; font-family: 'Noto Serif KR', serif; color: var(--text-dark); word-break: keep-all; }
         
@@ -122,6 +125,24 @@
         .address-box { margin-bottom: 20px; }
         .btn-copy-addr { display: inline-block; margin-top: 10px; padding: 6px 15px; font-size: 0.8rem; border: 1px solid var(--divider-color); border-radius: 20px; background: #fff; cursor: pointer; }
 
+        /* 길찾기 버튼 그룹 스타일 */
+        .map-buttons { display: flex; gap: 8px; margin-top: 15px; justify-content: center; }
+        .map-btn { 
+            flex: 1; 
+            padding: 12px 0; 
+            border-radius: 6px; 
+            border: 1px solid var(--divider-color); 
+            background: #fff; 
+            font-size: 0.85rem; 
+            color: var(--text-dark); 
+            text-decoration: none; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center;
+            transition: background-color 0.2s;
+        }
+        .map-btn:active { background-color: #f8f8f8; }
+        
         /* 서열/관계 디자인 개선 */
         .family-relation { 
             display: flex; 
@@ -343,6 +364,13 @@
         
         <div class="map-wrapper">
             <div id="map" style="width:100%; height:100%;"></div>
+        </div>
+
+        <!-- 길찾기 버튼 그룹 추가 -->
+        <div class="map-buttons">
+            <a href="https://naver.me/x0OftcYl" target="_blank" class="map-btn">네이버 지도</a>
+            <a href="https://map.kakao.com/link/to/호텔선샤인,36.349162,127.438541" target="_blank" class="map-btn">카카오내비</a>
+            <a href="https://surl.tmap.co.kr/search?name=호텔선샤인" target="_blank" class="map-btn">티맵</a>
         </div>
     </section>
 
