@@ -146,6 +146,9 @@
                 <div class="slide"><img src="./images/photo6.jpg" alt="6"></div>
                 <div class="slide"><img src="./images/photo7.jpg" alt="7"></div>
                 <div class="slide"><img src="./images/photo8.jpg" alt="8"></div>
+                <div class="slide"><img src="./images/photo9.jpg" alt="9"></div>
+                <div class="slide"><img src="./images/photo10.jpg" alt="10"></div>
+                <div class="slide"><img src="./images/photo11.jpg" alt="11"></div>
             </div>
             <button class="nav-btn" style="left:12px;" onclick="handleNav(-1)">❮</button>
             <button class="nav-btn" style="right:12px;" onclick="handleNav(1)">❯</button>
@@ -307,7 +310,7 @@
 
     function moveSlide(dir) {
         if(!slider) return;
-        currentIdx = (currentIdx + dir + 8) % 8;
+        currentIdx = (currentIdx + dir + 11) % 11;
         slider.style.transform = `translateX(-${currentIdx * 12.5}%)`;
     }
 
