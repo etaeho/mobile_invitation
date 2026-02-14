@@ -632,51 +632,46 @@
     }
 
 
+    // 1. 날짜 포맷 함수 (yyyymmddhh24miss)
     function getFormattedDate() {
         const n = new Date();
         const f = (v) => String(v).padStart(2, '0');
         return `${n.getFullYear()}${f(n.getMonth()+1)}${f(n.getDate())}${f(n.getHours())}${f(n.getMinutes())}${f(n.getSeconds())}`;
     }
 
-    window.submitRSVP = async function() {
-        if (!auth.currentUser) { 
-            window.showToast("인증 처리 중입니다. 잠시 후 다시 시도해주세요.");
-            await initAuth(); 
-            return; 
-        }
-
+    // 2. RSVP 전송 (구글 시트 연동)
+    function submitRSVP() {
         const phone = document.getElementById('rsvpPhone').value.trim();
         if (!phone || phone.length !== 4 || isNaN(phone)) {
-            window.showToast("연락처 뒷자리 4자리를 입력해주세요.");
+            showToast("연락처 뒷자리 4자리를 정확히 입력해주세요.");
             return;
         }
 
         const btn = document.getElementById('rsvpSubmitBtn');
-        btn.disabled = true; btn.innerText = "전송 중...";
+        btn.disabled = true;
+        btn.innerText = "전송 중...";
 
-        try {
-            const dateStr = getFormattedDate();
-            const rsvpRef = doc(db, 'artifacts', appId, 'public', 'data', 'rsvps', phone);
-            await setDoc(rsvpRef, { phone, date: dateStr, timestamp: serverTimestamp() });
+        const dateStr = getFormattedDate();
 
-            // 구글시트전송1
-            const scriptURL = 'https://script.google.com/macros/s/AKfycbzeCGRgb6B1kJfcgT33vrv0ha-EeoAwrfyrRPRtZB8P_pDIW8nptFT-BqAZvCPdhjV5/exec'; 
-            fetch(scriptURL, {
-                method: 'POST',
-                mode: 'no-cors',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ phone: phone, date: dateStr })
-            });
-
-            window.showToast("전달되었습니다.");
+        // 구글시트전송1
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbzeCGRgb6B1kJfcgT33vrv0ha-EeoAwrfyrRPRtZB8P_pDIW8nptFT-BqAZvCPdhjV5/exec'; 
+        
+        fetch(scriptURL, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ phone: phone, date: dateStr })
+        }).then(() => {
+            showToast("전달되었습니다.");
             document.getElementById('rsvpForm').style.display = 'none';
             document.getElementById('rsvpSuccess').style.display = 'block';
-        } catch (error) {
-            console.error(error);
-            window.showToast("오류가 발생했습니다. 새로고침 후 시도해주세요.");
-            btn.disabled = false; btn.innerText = "참석 의사 전달하기";
-        }
-    };
+        }).catch((err) => {
+            console.error(err);
+            showToast("전송 중 오류가 발생했습니다.");
+            btn.disabled = false;
+            btn.innerText = "참석 의사 전달하기";
+        });
+    }
 
     const initKakaoMap = () => {
         const container = document.getElementById('map');
@@ -705,9 +700,6 @@
         else el.innerHTML = `축복해주셔서 감사합니다.`;
         initAuth();
     });
-
-
-        initAuth();
 </script>
 
 </body>
