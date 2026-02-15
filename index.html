@@ -362,6 +362,19 @@
         .rsvp-input:focus { border-color: var(--point-color); }
         .btn-rsvp { width: 100%; padding: 18px; background-color: var(--point-color); color: #fff; border: none; border-radius: 4px; cursor: pointer; font-size: 1rem; font-family: inherit; }
 
+
+        /* 연락처 디자인 */
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 3000; justify-content: center; align-items: center; padding: 20px; }
+        .modal-content { background: #fff; width: 100%; max-width: 350px; border-radius: 12px; overflow: hidden; animation: modalFadeIn 0.3s ease-out; }
+        .modal-header { padding: 20px; border-bottom: 1px solid #f5f5f5; font-weight: 500; color: var(--point-color); display: flex; justify-content: space-between; align-items: center; }
+        .modal-body { padding: 10px 20px 20px; }
+        .contact-group { margin-top: 20px; text-align: left; }
+        .contact-group-title { font-size: 0.8rem; color: #aaa; margin-bottom: 10px; }
+        .contact-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid #f9f9f9; }
+        .contact-actions a { display: inline-flex; width: 36px; height: 36px; background: #f8f8f8; border-radius: 50%; justify-content: center; align-items: center; color: var(--point-color); text-decoration: none; }
+
+        @keyframes modalFadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeInOut { 0% {opacity:0;} 15% {opacity:1;} 85% {opacity:1;} 100% {opacity:0;} }
         
     </style>
 </head>
@@ -403,6 +416,15 @@
                 <span class="relation-text">의 장녀</span>
                 <span class="couple-name">박찬미</span>
             </div>
+
+                        <!-- 연락처 팝업 열기 버튼 -->
+            <button class="btn-contact-open" onclick="openContactModal()">
+                <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M3.654 1.328a.678.678 0 0 0-1.015-.063L1.605 2.3c-.483.484-.661 1.169-.45 1.77a17.568 17.568 0 0 0 4.168 6.608 17.569 17.569 0 0 0 6.608 4.168c.601.211 1.286.033 1.77-.45l1.034-1.034a.678.678 0 0 0-.063-1.015l-2.307-1.794a.678.678 0 0 0-.58-.122l-2.19.547a1.745 1.745 0 0 1-1.657-.459L5.482 8.062a1.745 1.745 0 0 1-.46-1.657l.548-2.19a.678.678 0 0 0-.122-.58L3.654 1.328zM1.884.511a1.745 1.745 0 0 1 2.612.163L6.29 2.468a1.745 1.745 0 0 1 .312 1.493L6.054 5.88a.245.245 0 0 0 .064.234l2.768 2.768a.245.245 0 0 0 .234.064l1.919-.48a1.745 1.745 0 0 1 1.493.312l1.794 2.307a1.745 1.745 0 0 1-.163 2.612l-1.034 1.034c-.769.769-1.927.941-2.88.608a18.63 18.63 0 0 1-7.008-4.426 18.633 18.633 0 0 1-4.426-7.008c-.333-.953-.16-2.111.608-2.88L1.884.511z"/>
+                </svg>
+                축하 인사 전하기
+            </button>
+            
         </div>
     </section>
 
@@ -523,6 +545,54 @@
         <button class="btn-share" onclick="copyText(window.location.href)">청첩장 링크 복사하기</button>
         <div class="copyright">Copyright © 2026 Taeho & Chanmi. All rights reserved.</div>
     </section>
+
+    <!-- 연락처 모달 팝업 -->
+    <div class="modal-overlay" id="contactModal" onclick="closeContactModal()">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <span>축하 인사 전하기</span>
+                <button onclick="closeContactModal()" style="background:none; border:none; font-size:1.5rem; cursor:pointer; color:#ccc;">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="contact-group">
+                    <div class="contact-group-title">신랑 및 신랑측 혼주</div>
+                    <div class="contact-item">
+                        <div class="contact-info">이태호 <span>신랑</span></div>
+                        <!-- 실제 전화번호로 수정 필요 -->
+                        <div class="contact-actions"><a href="tel:01030507484">📞</a></div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-info">이상호 <span>아버지</span></div>
+                        <!-- 실제 전화번호로 수정 필요 -->
+                        <div class="contact-actions"><a href="tel:01000000000">📞</a></div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-info">강희선 <span>어머니</span></div>
+                        <!-- 실제 전화번호로 수정 필요 -->
+                        <div class="contact-actions"><a href="tel:01000000000">📞</a></div>
+                    </div>
+                </div>
+                <div class="contact-group">
+                    <div class="contact-group-title">신부 및 신부측 혼주</div>
+                    <div class="contact-item">
+                        <div class="contact-info">박찬미 <span>신부</span></div>
+                        <!-- 실제 전화번호로 수정 필요 -->
+                        <div class="contact-actions"><a href="tel:01012345678">📞</a></div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-info">박형서 <span>아버지</span></div>
+                        <!-- 실제 전화번호로 수정 필요 -->
+                        <div class="contact-actions"><a href="tel:01000000000">📞</a></div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-info">이인숙 <span>어머니</span></div>
+                        <!-- 실제 전화번호로 수정 필요 -->
+                        <div class="contact-actions"><a href="tel:01000000000">📞</a></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <script>
