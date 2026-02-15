@@ -397,6 +397,18 @@
         .contact-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid #f9f9f9; }
         .contact-actions a { display: inline-flex; width: 36px; height: 36px; background: #f8f8f8; border-radius: 50%; justify-content: center; align-items: center; color: var(--point-color); text-decoration: none; }
 
+
+        
+        .map-sketch { margin: 20px 0; padding: 20px; background: #fff; border: 1px solid var(--divider); border-radius: 8px; }
+        .location-info { text-align: left; font-size: 0.85rem; line-height: 1.8; color: var(--text-sub); padding: 0 5px; }
+        .location-info p { margin-bottom: 20px; }
+        .location-info b { color: var(--text-main); display: block; margin-bottom: 4px; font-size: 0.9rem; }
+
+        .rsvp-section { background-color: #f9f7f4; border-top: 1px solid var(--divider); border-bottom: 1px solid var(--divider); }
+        .rsvp-input { width: 100%; padding: 16px; border: 1px solid var(--divider); border-radius: 4px; margin-bottom: 12px; font-size: 1.2rem; outline: none; font-family: inherit; text-align: center; letter-spacing: 8px; font-weight: 500; background: #fff; }
+        .btn-rsvp { width: 100%; padding: 18px; background-color: var(--point-color); color: #fff; border: none; border-radius: 4px; cursor: pointer; font-size: 1rem; }
+        @keyframes modalFadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
         @keyframes modalFadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes fadeInOut { 0% {opacity:0;} 15% {opacity:1;} 85% {opacity:1;} 100% {opacity:0;} }
         
@@ -545,6 +557,54 @@
             <a href="https://naver.me/x0OftcYl" target="_blank" class="btn-nav">네이버 지도</a>
             <a href="https://map.kakao.com/link/to/호텔선샤인웨딩홀 주차장,36.349162,127.438541" target="_blank" class="btn-nav">카카오내비</a>
             <a href="tmap://route?goalname=호텔선샤인 주차장&goalx=127.438541&goaly=36.349162" class="btn-nav">티맵</a>
+        </div>
+
+        <div class="map-sketch">
+            <svg viewBox="0 0 400 320" xmlns="http://www.w3.org/2000/svg" style="width:100%; height:auto; font-family: sans-serif;">
+                <rect x="0" y="80" width="400" height="40" fill="#f0f0f0" />
+                <rect x="120" y="0" width="40" height="320" fill="#f0f0f0" />
+                <text x="10" y="105" font-size="10" fill="#999">동서대로</text>
+                
+                <rect x="10" y="10" width="100" height="60" rx="4" fill="#e8e8e8" stroke="#ccc" />
+                <text x="60" y="40" font-size="11" font-weight="bold" fill="#666" text-anchor="middle">대전복합</text>
+                <text x="60" y="55" font-size="11" font-weight="bold" fill="#666" text-anchor="middle">터미널</text>
+                
+                <!-- 메인: 선샤인호텔 본체 -->
+                <rect x="170" y="130" width="130" height="100" rx="4" fill="#fdfbf7" stroke="#b2945b" stroke-width="2" />
+                <text x="235" y="175" font-size="13" font-weight="bold" fill="#b2945b" text-anchor="middle">선샤인호텔</text>
+                <text x="235" y="190" font-size="9" fill="#b2945b" text-anchor="middle">(씨엘드포레 7F)</text>
+                
+                <!-- 주차장 입구 1 (호텔 오른쪽 앞쪽) -->
+                <path d="M320 90 L320 140 L300 140" stroke="#b2945b" stroke-width="2" stroke-dasharray="2,2" fill="none" />
+                <path d="M300 140 L305 137 M300 140 L305 143" stroke="#b2945b" stroke-width="2" />
+                <text x="325" y="130" font-size="9" fill="#b2945b" font-weight="bold">주차장 입구</text>
+                
+                <!-- 주차장 입구 2 (호텔 뒷편 중앙) -->
+                <path d="M235 295 L235 230" stroke="#b2945b" stroke-width="2" stroke-dasharray="2,2" fill="none" />
+                <path d="M235 230 L232 235 M235 230 L238 235" stroke="#b2945b" stroke-width="2" />
+                <text x="242" y="242" font-size="9" fill="#b2945b" font-weight="bold">주차장 입구</text>
+
+                <!-- 예비주차장 (호텔 뒷편/아래쪽) -->
+                <rect x="170" y="255" width="130" height="40" rx="4" fill="#f9f7f4" stroke="#ddd" />
+                <text x="235" y="280" font-size="10" fill="#777" text-anchor="middle">예비 주차장</text>
+            </svg>
+        </div>
+
+        <div class="location-info">
+            <p>
+                <b>🅿️ 주차장 안내</b>
+                - 호텔 내 전용 주차장 무료 이용 가능 <br>
+                - 호텔선샤인 뒷편 공터 예비주차장 이용 가능
+            </p>
+            <p>
+                <b>🚌 대중교통 이용시</b>
+                102, 105, 106, 201, 501, 601, <br>
+                602, 607, 611, 616, 701, 802, 2(급행)
+            </p>
+            <p>
+                <b>🏢 고속 / 시외버스 이용시</b>
+                대전복합터미널 하차 후 맞은편 도보 3분 거리
+            </p>
         </div>
     </section>
 
