@@ -130,10 +130,13 @@
         .invitation { background-color: var(--white); }
         .invitation-text {
             line-height: 2.2;
-            font-size: 0.95rem;
+            font-size: clamp(14px, 4.2vw, 17px);
             margin-bottom: 50px;
             padding: 0 10px;
-            word-break: keep-all; /* 단어 단위로 줄바꿈 방지 */
+        }
+        .invitation-text span {
+            display: inline-block;
+            white-space: nowrap; 
         }
         
         /* 서열/관계 스타일 */
@@ -536,14 +539,14 @@
     <!-- Invitation -->
     <section class="invitation">
         <div class="section-title">Invitation</div>
-        <div class="invitation-text">
-            우연으로 만난 저희가 서로를 알아가며<br>
-            세상에 단 하나뿐인 소중한 꽃이 되었습니다.<br><br>
-            무엇을 바라는 기대의 마음을 내려놓고<br>
-            무엇을 줄 수 있을지 고민하는 삶을 시작하려 합니다.<br><br>
-            저희의 첫 출발을 축복해 주시는<br>
-            마음과 따듯한 진심을 평생 소중히 간직하겠습니다.<br><br>
-        </div>
+        <p class="invitation-text">
+            <span>우연으로 만난 저희가 서로를 알아가며</span><br>
+            <span>세상에 단 하나뿐인 소중한 꽃이 되었습니다.</span><br><br>
+            <span>무엇을 바라는 기대의 마음을 내려놓고</span><br>
+            <span>무엇을 줄 수 있을지 고민하는 삶을 시작하려 합니다.</span><br><br>
+            <span>저희의 첫 출발을 축복해 주시는</span><br>
+            <span>마음과 따듯한 진심을 평생 소중히 간직하겠습니다.</span><br>
+        </p>
 
         <div class="family-relation">
             <div class="relation-row">
