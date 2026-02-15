@@ -623,15 +623,15 @@
     </section>
 
     <!-- Footer -->
-
-    <section class="footer-wrap">
-        <button class="btn-share" onclick="sendKakao()" style="background-color: #FEE500; border: none; margin-bottom: 10px; color: #3c1e1e;">
-            <img src="https://developers.kakao.com/assets/img/about/logos/kakaotalksharing/kakaotalk_sharing_btn_medium.png" width="18" style="vertical-align: middle; margin-right: 8px;">
+    <footer style="padding:60px 24px; text-align:center; border-top:1px solid var(--divider);">
+        <!-- 카카오톡 커스텀 공유 버튼 -->
+        <button class="btn-kakao" onclick="shareKakao()">
+            <img src="https://developers.kakao.com/assets/img/about/logos/kakaotalksharing/kakaotalk_sharing_btn_medium.png" alt="카카오 로고">
             카카오톡으로 공유하기
         </button>
-        <button class="btn-share" onclick="copyText(window.location.href)">청첩장 링크 복사하기</button>
-        <div class="copyright">Copyright © 2026 Taeho & Chanmi. All rights reserved.</div>
-    </section>
+        <button onclick="copyURL()" style="width:100%; padding:15px; background:none; border:1px solid #ddd; border-radius:4px; font-size: 0.95rem;">청첩장 링크 복사하기</button>
+        <div style="margin-top:30px; font-size:0.7rem; color:#bbb;">Copyright © 2026 Taeho & Chanmi.</div>
+    </footer>
 
     <!-- 연락처 모달 팝업 -->
     <div class="modal-overlay" id="contactModal" onclick="closeContactModal()">
@@ -688,42 +688,20 @@
     };
 
 
-        /* 카카오톡 공유 초기화 및 함수 */
+    /* 카카오톡 공유 초기화 및 함수 */
     if (!Kakao.isInitialized()) {
         // 사용 중인 카카오 앱 키 (JavaScript 키)를 입력하세요
         Kakao.init('60cf6280e9ee52aa958f623a9f14c4e3'); 
     }
-    
-    function sendKakao() {
-        Kakao.Share.sendDefault({
-            objectType: 'feed',
-            content: {
-                title: '이태호 ♥ 박찬미 결혼식에 초대합니다',
-                description: '2026년 6월 13일 토요일 오후 2시 30분\n호텔선샤인 7층 씨엘드 포레',
-                // 중요: 이미지는 절대 경로(https://...)여야 카톡에서 보입니다.
-                imageUrl: 'https://etaeho.github.io/mobile_invitation/images/main.jpg', 
-                link: {
-                    mobileWebUrl: window.location.href,
-                    webUrl: window.location.href,
-                },
+
+    /* 카카오톡 공유 기능 (Custom Template 방식) */
+    function shareKakao() {
+        Kakao.Share.sendCustom({
+            templateId: 129463, // 사용자가 제공한 템플릿 ID로 업데이트
+            templateArgs: {
+                'title': '이태호 ♥ 박찬미 결혼식에 초대합니다',
+                'description': '2026. 06. 13. 토요일 오후 2:30',
             },
-            buttons: [
-                {
-                    title: '모바일 청첩장 보기',
-                    link: {
-                        mobileWebUrl: window.location.href,
-                        webUrl: window.location.href,
-                    },
-                },
-                {
-                    title: '위치 보기',
-                    link: {
-                        // 지도 탭으로 바로 이동하게 하고 싶을 때 활용
-                        mobileWebUrl: window.location.href + '#map',
-                        webUrl: window.location.href + '#map',
-                    },
-                },
-            ],
         });
     }
     
