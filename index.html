@@ -306,6 +306,39 @@
             border-radius: 4px;
         }
 
+        /* 내비게이션 버튼 스타일 추가 */
+        .nav-buttons { display: flex; justify-content: center; gap: 8px; margin-top: 15px; flex-wrap: wrap; }
+        .btn-nav {
+            display: inline-flex;
+            align-items: center;
+            padding: 10px 12px 10px 36px;
+            position: relative;
+            text-decoration: none;
+            border-radius: 5px;
+            border: 1px solid #eee;
+            background-color: var(--white);
+            color: var(--text-main);
+            font-size: 0.85rem;
+            transition: background-color 0.2s;
+        }
+        .btn-nav:active { background-color: #f9f9f9; }
+        .btn-nav::before {
+            content: "";
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 18px;
+            height: 18px;
+            background-size: contain;
+            background-repeat: no-repeat;
+        }
+
+        /* 내비게이션 브랜드 로고 아이콘 설정 */
+        .naver::before { background-image: url('https://www.naver.com/favicon.ico'); }
+        .kakao::before { background-image: url('https://map.kakao.com/favicon.ico'); }
+        .tmap::before { background-image: url('https://www.tmap.co.kr/favicon.ico'); }
+        
         /* 하단 공유 */
         .footer-wrap { padding: 60px 24px; background: var(--white); border-top: 1px solid var(--divider); }
         .btn-share {
@@ -556,10 +589,10 @@
         
         <div id="map" class="map-container"></div>
 
-        <div class="map-nav">
-            <a href="https://naver.me/x0OftcYl" target="_blank" class="btn-nav">🔍 네이버 지도</a>
-            <a href="https://map.kakao.com/link/to/호텔선샤인웨딩홀 주차장,36.349162,127.438541" target="_blank" class="btn-nav">🅿️ 카카오 내비안내</a>
-            <a href="tmap://route?goalname=호텔선샤인 주차장&goalx=127.438541&goaly=36.349162" class="btn-nav">🅿️ 티맵 안내</a>
+        <div class="nav-buttons">
+            <a href="https://map.naver.com/v5/search/호텔선샤인/place/13210156" target="_blank" class="btn-nav naver">네이버 지도</a>
+            <a href="https://map.kakao.com/link/to/호텔선샤인,36.349162,127.438541" target="_blank" class="btn-nav kakao">카카오 내비</a>
+            <a href="tmap://route?goalname=호텔선샤인&goalx=127.438541&goaly=36.349162" class="btn-nav tmap">티맵 안내</a>
         </div>
 
         <div class="map-sketch">
