@@ -12,7 +12,6 @@
     <meta property="og:type" content="website">
 
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;1,300&family=Noto+Serif+KR:wght@200;300;400&display=swap" rel="stylesheet">
-    <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.4/kakao.min.js" integrity="sha384-oCOY6D6ST9KNp7hm976P2R74FwInmU9j3hQ1FisJm6bU0rVfXfU5F08S2rN0C2mN" crossorigin="anonymous"></script>
     
     <!-- 카카오 지도 SDK -->
     <script type="text/javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=60cf6280e9ee52aa958f623a9f14c4e3&libraries=services&autoload=false"></script>
@@ -573,17 +572,14 @@
                 <text x="205" y="150" font-size="12" font-weight="bold" fill="#b2945b" text-anchor="middle">선샤인호텔</text>
                 <text x="205" y="165" font-size="9" fill="#b2945b" text-anchor="middle">(씨엘드포레 7F)</text>
                 
-                <!-- 주차장 입구 1 (정면 우측 직선 화살표) -->
                 <path d="M225 100 L225 110" stroke="#b2945b" stroke-width="1.5" fill="none" />
                 <path d="M225 110 L222 106 M225 110 L228 106" stroke="#b2945b" stroke-width="1.5" />
                 <text x="228" y="105" font-size="8" fill="#b2945b" font-weight="bold">주차장 입구</text>
                 
-                <!-- 주차장 입구 2 (뒷편 중앙 직선 화살표) -->
                 <path d="M205 210 L205 195" stroke="#b2945b" stroke-width="1.5" fill="none" />
                 <path d="M205 195 L202 199 M205 195 L208 199" stroke="#b2945b" stroke-width="1.5" />
                 <text x="210" y="208" font-size="8" fill="#b2945b" font-weight="bold">주차장 입구</text>
 
-                <!-- 예비주차장 -->
                 <rect x="150" y="215" width="110" height="30" rx="4" fill="#f9f7f4" stroke="#ddd" />
                 <text x="205" y="234" font-size="9" fill="#777" text-anchor="middle">예비 주차장</text>
             </svg>
@@ -621,17 +617,12 @@
             🕊️<br><br><b>참석 의사가 잘 전달되었습니다.</b>
         </div>
     </section>
-
+    
     <!-- Footer -->
-    <footer style="padding:60px 24px; text-align:center; border-top:1px solid var(--divider);">
-        <!-- 카카오톡 커스텀 공유 버튼 -->
-        <button class="btn-kakao" onclick="shareKakao()">
-            <img src="https://developers.kakao.com/assets/img/about/logos/kakaotalksharing/kakaotalk_sharing_btn_medium.png" alt="카카오 로고">
-            카카오톡으로 공유하기
-        </button>
-        <button onclick="copyURL()" style="width:100%; padding:15px; background:none; border:1px solid #ddd; border-radius:4px; font-size: 0.95rem;">청첩장 링크 복사하기</button>
-        <div style="margin-top:30px; font-size:0.7rem; color:#bbb;">Copyright © 2026 Taeho & Chanmi.</div>
-    </footer>
+    <section class="footer-wrap">
+        <button class="btn-share" onclick="copyText(window.location.href)">청첩장 링크 복사하기</button>
+        <div class="copyright">Copyright © 2026 Taeho & Chanmi. All rights reserved.</div>
+    </section>
 
     <!-- 연락처 모달 팝업 -->
     <div class="modal-overlay" id="contactModal" onclick="closeContactModal()">
@@ -687,24 +678,6 @@
         updateDDay();
     };
 
-
-    /* 카카오톡 공유 초기화 및 함수 */
-    if (!Kakao.isInitialized()) {
-        // 사용 중인 카카오 앱 키 (JavaScript 키)를 입력하세요
-        Kakao.init('60cf6280e9ee52aa958f623a9f14c4e3'); 
-    }
-
-    /* 카카오톡 공유 기능 (Custom Template 방식) */
-    function shareKakao() {
-        Kakao.Share.sendCustom({
-            templateId: 129463, // 사용자가 제공한 템플릿 ID로 업데이트
-            templateArgs: {
-                'title': '이태호 ♥ 박찬미 결혼식에 초대합니다',
-                'description': '2026. 06. 13. 토요일 오후 2:30',
-            },
-        });
-    }
-    
     /* 디데이 */
     function updateDDay() {
         const target = new Date('2026-06-13').getTime();
