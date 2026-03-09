@@ -49,7 +49,7 @@
         }
 
         /* 버튼 및 링크 등 인터랙션 요소는 예외 처리 */
-        button, a, .acc-btn, .btn-sm, .btn-nav, .btn-share, .slider-btn, .btn-cal {
+        button, a, input, .acc-btn, .btn-sm, .btn-nav, .btn-share, .slider-btn, .btn-cal, .music-btn {
             user-select: auto;
             pointer-events: auto;
         }
@@ -60,6 +60,7 @@
             font-family: 'Noto Serif KR', serif;
             color: var(--text-main);
             overflow-x: hidden;
+            touch-action: manipulation;
         }
 
         .container {
@@ -69,7 +70,36 @@
             box-shadow: 0 0 30px rgba(0,0,0,0.05);
             min-height: 100vh;
         }
-
+        /* [추가] 배경음악 컨트롤 버튼 스타일 */
+        .music-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+            width: 36px;
+            height: 36px;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 50%; 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .music-btn svg {
+            width: 18px;
+            height: 18px;
+            fill: var(--point-color);
+								
+        }
+        /* 음악 재생 중 애니메이션 */
+        .music-btn.playing {
+            animation: rotate_music 4s linear infinite;
+        }
+        @keyframes rotate_music {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
         section {
             padding: 80px 24px;
             text-align: center;
@@ -134,10 +164,7 @@
             margin-bottom: 50px;
             padding: 0 10px;
         }
-        .invitation-text span {
-            display: inline-block;
-            white-space: nowrap; 
-        }
+        .invitation-text span { display: inline-block; white-space: nowrap; }
         
         /* 서열/관계 스타일 */
         .family-relation { 
@@ -525,6 +552,15 @@
 
 <div id="toast">복사되었습니다.</div>
 
+<audio id="bgm" loop>
+    <source src="./images/Estrellita.mp3" type="audio/mpeg">
+</audio>
+<div class="music-btn" id="musicBtn" onclick="toggleMusic()">
+    <svg viewBox="0 0 24 24" id="musicIcon">
+        <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
+    </svg>
+</div>
+    
 <div class="container">
     <!-- Main -->
     <section class="main">
@@ -795,6 +831,48 @@
 </div>
 
 <script>
+    /* 스크롤을 방해하지 않는 안전한 핀치 줌(두 손가락 확대) 방지 */
+    document.addEventListener('touchstart', function (event) {
+        if (event.touches.length > 1) {
+            event.preventDefault(); 
+        }
+    }, { passive: false });
+
+    // 더블 탭 확대 방지
+    let lastTouchEnd = 0;
+    document.documentElement.addEventListener('touchend', function (event) {
+        const now = (new Date()).getTime();
+        if (now - lastTouchEnd <= 300) {
+            event.preventDefault();
+        }
+        lastTouchEnd = now;
+    }, false);
+
+    /* [추가] 배경음악 제어 스크립트 */
+    const bgm = document.getElementById('bgm');
+    const musicBtn = document.getElementById('musicBtn');
+    let isPlaying = false;
+
+    function toggleMusic() {
+        if (isPlaying) {
+            bgm.pause();
+            musicBtn.classList.remove('playing');
+        } else {
+            bgm.play();
+            musicBtn.classList.add('playing');
+        }
+        isPlaying = !isPlaying;
+    }
+
+    // 브라우저 정책상 첫 터치 시 음악 자동 재생 시도
+    document.body.addEventListener('click', function() {
+        if(!isPlaying) {
+            // bgm.play().then(() => {
+            //     isPlaying = true;
+            //     musicBtn.classList.add('playing');
+            // }).catch(e => console.log("Auto-play blocked"));
+        }
+    }, { once: true });
     /* 카카오 지도 */
     window.onload = function() {
         if (typeof kakao !== 'undefined' && kakao.maps) {
