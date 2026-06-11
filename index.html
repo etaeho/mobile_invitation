@@ -899,11 +899,15 @@
     
     /* 디데이 */
     function updateDDay() {
-        const target = new Date('2026-06-13').getTime();
-        const now = new Date().setHours(0,0,0,0);
-        const diff = target - now;
+        // 날짜-only 문자열은 브라우저에 따라 UTC로 파싱될 수 있어
+        // 로컬(한국) 자정 기준으로 정확히 계산하도록 생성자를 사용
+        const target = new Date(2026, 5, 13); // 0-based 월: 5 = June
+        const now = new Date();
+        const todayMidnight = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+
+        const diff = target.getTime() - todayMidnight.getTime();
         const days = Math.ceil(diff / (1000 * 60 * 60 * 24));
-        
+
         const el = document.getElementById('dDayDisplay');
         if (days > 0) el.innerHTML = `태호 ❤ 찬미의 결혼식이 <b>${days}일</b> 남았습니다.`;
         else if (days === 0) el.innerHTML = `<b>저희 오늘 결혼합니다! 축복해 주세요.</b>`;
