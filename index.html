@@ -1051,7 +1051,7 @@
         const target = new Date('2026-06-13').getTime();
         const diff = Math.ceil((target - new Date().setHours(0,0,0,0)) / (1000 * 60 * 60 * 24));
         const el = document.getElementById('dDayDisplay');
-        if (diff > 0) el.innerHTML = `결혼식이 <b>${diff}일</b> 남았습니다.`;
+        if (diff > 0) el.innerHTML = `결혼식이 <b>${diff-1}일</b> 남았습니다.`;
         else if (diff === 0) el.innerHTML = `<b>저희 오늘 결혼합니다! 축복해 주세요.</b>`;
         else el.innerHTML = `축복해주셔서 감사합니다.`;
         initAuth();
